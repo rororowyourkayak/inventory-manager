@@ -23,7 +23,7 @@ class DBController extends Controller
        $items = request()->input();
        $items["user"]  = auth()->user()->username;
        Item::create($items);
-       
+      
       return redirect("/edit");
    }
 
