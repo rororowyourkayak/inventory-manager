@@ -34,7 +34,7 @@ class SessionController extends Controller
     }
 
     public function adminCheck(){
-        include('C:\wamp\www\inventory\resources\views\reusable_snippets\validAdmins.php');
+        $validAdmins = include('C:\wamp\www\inventory\resources\views\reusable_snippets\validAdmins.php');
 
         if(auth()->guest()){
             return redirect("/");
