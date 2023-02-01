@@ -18,7 +18,7 @@
                         });
 
                         $("tr.checkboxInTable").click(function(){
-                            console.log(this)
+                        
                             var id = $(this).attr("id");
                             if($("#".concat(id,"_checkbox")).is(':checked')){
                                 $("#".concat(id,"_checkbox")).prop('checked', false);
@@ -67,7 +67,7 @@
                         <td id="{{$item->id}}_category">{{$item->category}}</td>
                         <td id="{{$item->id}}_description">{{$item->description}}</td>
                         <td id="{{$item->id}}_quantity">{{$item->quantity}}</td>
-                        <td id="{{$item->id}}_checkbox"><input type="checkbox"  value="{{$item->id}}" name="{{$item->id}}">
+                        <td id="{{$item->id}}_check"><input type="checkbox" value="{{$item->id}}" name="{{$item->id}}">
                     </tr>
             
                     @endforeach
