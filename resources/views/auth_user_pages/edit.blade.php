@@ -2,10 +2,8 @@
  use App\Http\Controllers\DBController;
  use App\Models\Item;
  ?>
+@extends('layouts.master')
 
-<!DOCTYPE html>
-<html lang="en">
-@include('reusable_snippets/page_head') 
 <title>Edit Inventory</title>
 <script>
                         $(document).ready(function(){
@@ -26,9 +24,9 @@
                             
                         });
                         });
-                </script>
-<body class="mb-4">
-@include('reusable_snippets/navbar_for_logged_in_pages')
+</script>
+
+@section('content')
     <div class="container text-center my-4">
         <h1>Edit Inventory</h1>
         <p>Use this page to edit your inventory entries.</p>
@@ -154,6 +152,4 @@
                 </div>
             </div>
         </div>
-</body>
-
-</html>
+@endsection

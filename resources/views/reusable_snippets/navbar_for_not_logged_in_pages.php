@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: steelblue;">
-  
+  <div class="container-fluid">
   <ul class="navbar-nav">
   <li class="nav-item">
           <a class="nav-link text-white" href="/">
@@ -20,4 +20,5 @@
       </li>
       
   </ul>
+  </div>
 </nav>
