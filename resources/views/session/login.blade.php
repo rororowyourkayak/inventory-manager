@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-@include('reusable_snippets/page_head') 
+@extends('layouts.master')
 <title>Login</title>
 
-<body class="mb-4">
-@include('reusable_snippets\navbar_for_not_logged_in_pages')
+
+@section('content')
     <div class="container text-center mt-4" >
         <h1>Inventory Manager Login</h1>
         <p>Please enter your credentials below to login.</p>
@@ -39,6 +37,4 @@
                     </div>
         </div>
     </div>
-</body>
-
-</html>
+@endsection

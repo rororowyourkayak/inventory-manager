@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-@include('reusable_snippets/page_head') 
+@extends('layouts.master')
 <title>Account</title>
-<body class="mb-4">
-@include('reusable_snippets/navbar_for_logged_in_pages')
 
+section('content')
 <div class="container text-center my-4"> 
     <h1>Account</h1>
 </div>
@@ -21,6 +18,5 @@
         </div>
     </div>
 </div>
+@endsection
 
-</body>
-</html>

@@ -1,8 +1,4 @@
-<?php 
-use App\Http\Controllers\DBController;
-use App\Models\User;
-use App\Models\Item;
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

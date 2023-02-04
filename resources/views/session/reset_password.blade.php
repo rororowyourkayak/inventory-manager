@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-@include('reusable_snippets/page_head') 
+@extends('layouts.master')
 <title>Reset Password</title>
-<body class="my-4">
+
+@section('content')
     <div class="container text-center">
         <h1>Reset Password</h1>
         
@@ -36,6 +35,4 @@
             </div>
         </div>
     </div>
-</body>
-
-</html>
+@endsection

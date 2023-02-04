@@ -1,11 +1,8 @@
-
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.master')
    
-@include('reusable_snippets/page_head') 
+
 <title>Sign Up</title>
-    <body>
-    @include('reusable_snippets\navbar_for_not_logged_in_pages')
+    @section('content')
         <div class="container text-center my-4" >
             <h1>Inventory Manager Sign Up</h1>
             <p>Use the form below to make an account.</p>
@@ -60,7 +57,5 @@
             </div>
             
         </div>
-       
-    </body>
-    @include('reusable_snippets/page_footer')
-</html>
+    @endsection
+    

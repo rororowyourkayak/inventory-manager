@@ -3,18 +3,16 @@ use App\Http\Controllers\DBController;
 use App\Models\User;
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-@include('reusable_snippets/page_head') 
+@extends('layouts.master')
 <title>Admin</title>
-<body class="mb-4 text-center">
-    
+
+@section('content')
 
     <div class="container text-center my-4">
         <h1>Admin Page</h1>
     </div>
 
-    <div class="container">
+    <div class="container text-center">
     <p>Total Users: {{DB::table('users')->count()}}</p>
     <p>Total Items: {{DB::table('items')->count()}}</p>
     </div>
@@ -44,5 +42,4 @@ use App\Models\User;
 </div>
 </div>
 
-</body>
-</html>
+@endsection

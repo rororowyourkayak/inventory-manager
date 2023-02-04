@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-@include('reusable_snippets/page_head') 
+@extends('layouts.master')
 <title>Forgot Password</title>
-<body class="my-4">
+
+@section('content')
 <div class="container text-center">
     <h1>Password Reset</h1>
     <p>Enter your email address below to get a password reset link.</p>
@@ -27,6 +26,5 @@
         </div>
     </div>
 </div>
-</body>
+@endsection
 
-</html>
