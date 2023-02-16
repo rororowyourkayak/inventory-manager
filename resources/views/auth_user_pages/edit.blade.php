@@ -1,5 +1,4 @@
 <?php
- use App\Http\Controllers\DBController;
  use App\Models\Item;
  ?>
 @extends('layouts.master')
@@ -18,9 +17,9 @@
                         $("tr.checkboxInTable").click(function(){
                         
                             var id = $(this).attr("id");
-                            if($("#".concat(id,"_checkbox")).is(':checked')){
-                                $("#".concat(id,"_checkbox")).prop('checked', false);
-                            }else $("#".concat(id,"_checkbox")).prop('checked', true);
+                            if($("#".concat(id,"_check")).is(':checked')){
+                                $("#".concat(id,"_check")).prop('checked', false);
+                            }else $("#".concat(id,"_check")).prop('checked', true);
                             
                         });
                         });
@@ -47,8 +46,8 @@
                 
                 <form method="post" action="/delete_item">
                     @csrf
-                    <table class="table table-bordered table-hover overflow-auto">
-                        <thead class="thead-light">
+                    <table class="table table-bordered text-center table-striped table-responsive-sm">
+                        <thead class="thead" style="background-color:steelblue; color:white;">
                             <tr> 
                                 <th>Item</th>
                                 <th>Category</th>
@@ -65,7 +64,7 @@
                         <td id="{{$item->id}}_category">{{$item->category}}</td>
                         <td id="{{$item->id}}_description">{{$item->description}}</td>
                         <td id="{{$item->id}}_quantity">{{$item->quantity}}</td>
-                        <td id="{{$item->id}}_check"><input type="checkbox" value="{{$item->id}}" name="{{$item->id}}">
+                        <td><input id="{{$item->id}}_check" type="checkbox" value="{{$item->id}}" name="{{$item->id}}">
                     </tr>
             
                     @endforeach
@@ -84,7 +83,7 @@
             <div class="row">
                 <div class="col-6">
                     <div class="card text-center">
-                        <div class="card-header text-center font-weight-bold">Add Item to Inventory</div>
+                        <div class="card-header text-center fw-bold">Add Item to Inventory</div>
                         <div class="card-body">
                             <form method="post" action="/add_item" >
                                 @csrf
@@ -114,7 +113,7 @@
                
                 <div class="col-6">
                     <div class="card text-center">
-                        <div class="card-header font-weight-bold">Update Item</div>
+                        <div class="card-header fw-bold">Update Item</div>
                         <div class="card-body">
                         <form action="/update_item" method="post">
                             @csrf

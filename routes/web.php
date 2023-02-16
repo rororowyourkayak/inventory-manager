@@ -32,6 +32,11 @@ Route::get("/login", [SessionController::class, 'create'])->middleware('guest');
 
 Route::get("/logout", [SessionController::class, 'destroy'])->middleware('auth');
 
+Route::get("/add", function(){return view("auth_user_pages.add_items");})->middleware('auth');
+Route::get("/update", function(){return view("auth_user_pages.update_items");})->middleware('auth');
+Route::get("/delete", function(){return view("auth_user_pages.delete_items");})->middleware('auth');
+
+
 Route::post("/delete_item",[DBController::class,'deleteItems']);
 Route::post("/add_item",[DBController::class,'addItems']);
 Route::post("/update_item",[DBController::class,'updateItems']);

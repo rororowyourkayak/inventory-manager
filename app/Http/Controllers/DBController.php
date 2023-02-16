@@ -16,7 +16,7 @@ class DBController extends Controller
       foreach($items as $item){
          Item::where('id',$item)->delete();
       }
-     return redirect("/edit");
+     return redirect("/delete");
    }
 
    public function addItems(){
@@ -24,7 +24,7 @@ class DBController extends Controller
        $items["user"]  = auth()->user()->username;
        Item::create($items);
       
-      return redirect("/edit");
+      return redirect("/add");
    }
 
    public function updateItems(){
@@ -34,6 +34,6 @@ class DBController extends Controller
       "category" => $items["category"],
       "description" => $items["description"],
       "quantity" => $items["quantity"]]);
-      return redirect("/edit");
+      return redirect("/update");
    }
 }
