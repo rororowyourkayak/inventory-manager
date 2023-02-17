@@ -20,8 +20,8 @@ use App\Models\User;
     <div class="container">
     <div class="col-sm-8 text-center mx-auto overflow-auto">
     
-    <table class="table table-bordered table-striped table-responsive-sm">
-        <thead class="thead-light">
+    <table class="table table-bordered table-striped table-responsive-sm text-center">
+        <thead class="thead-light" style="background-color:steelblue; color:white;">
                 <tr> 
                     <th>Username</th>
                     <th>Name</th>

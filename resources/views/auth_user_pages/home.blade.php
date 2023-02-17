@@ -10,7 +10,7 @@
 <div class="container text-center my-4"> 
             <h1>Inventory Home</h1>
             <p>Welcome back {{auth()->user()->name}}! View your inventory below.</p>
-            <p>To edit add, update, and delete items go the <a href="edit">Edit</a> page.</p>
+            
 </div>
     
 <div class="container">

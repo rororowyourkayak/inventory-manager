@@ -34,8 +34,8 @@ class SessionController extends Controller
     }
 
     public function adminCheck(){
-        $validAdmins = include('C:\wamp\www\inventory\resources\views\reusable_snippets\validAdmins.php');
-
+       
+        $validAdmins = ["rforde",];//Array of valid admins
         if(auth()->guest()){
             return redirect("/");
         }

@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="container text-center my-2">
+<div class="container text-center my-4">
     <h1>Add Items</h1>
     <p>Use the box below to add new entries to the inventory.</p>
 </div>

@@ -2,19 +2,9 @@
  use App\Models\Item;
  ?>
 @extends('layouts.master')
-<script>
-                    $(document).ready(function(){
-                        $("select#item_selector").change(function(){
-                            var idNum = $(this).children("option:selected").val();
-                            $("#item_name_update").val($("#".concat(idNum, "_item_name")).text()); 
-                            $("#category_update").val($("#".concat(idNum, "_category")).text()); 
-                            $("#description_update").val($("#".concat(idNum, "_description")).text()); 
-                            $("#quantity_update").val($("#".concat(idNum, "_quantity")).text()); 
-                        });
-                    });
-</script>
+
 @section('content')
-<div class="container text-center my-2">
+<div class="container text-center my-4">
     <h1>Update Items</h1>
     <p>Use the box below to add update entries in the inventory.</p>
 </div>
@@ -63,4 +53,19 @@
             </div>
 </div>
 
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function(){
+        $("#item_selector").change(function(){
+            var idNum = $(this).children("option:selected").val();
+                $("#item_name_update").val($("#".concat(idNum, "_item_name")).text()); 
+                console.log($("#item_name_update").val());
+                $("#category_update").val($("#".concat(idNum, "_category")).text()); 
+                $("#description_update").val($("#".concat(idNum, "_description")).text()); 
+                $("#quantity_update").val($("#".concat(idNum, "_quantity")).text()); 
+        });
+    });
+</script>
 @endsection

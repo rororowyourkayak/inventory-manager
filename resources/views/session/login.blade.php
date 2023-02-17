@@ -15,19 +15,19 @@
                 <div class="card-body">
                     <form action ="session" method ="post">
                                 @csrf
-                                <div class="container mb-3">
-                                    <div class="form-group">
+                                <div class="col-sm-8 container mb-3">
+                                    <div class="input-group mb-4">
                                         <label for="user">Username: </label>
-                                        <input type = "text" name="username" id="username" placeholder="Username" value ="{{ old('username') }}" > 
-                                        
+                                        <input class="form-control ms-1" type = "text" name="username" id="username" placeholder="Username" value ="{{ old('username') }}" > 
+        
                                     </div>
-                                    <div class="form-group">
+                                    <div class="input-group mb-4">
                                         <label for="password">Password: </label>
-                                        <input type = "password" name="password" id="password" placeholder="Password"> 
+                                        <input class="form-control ms-1" type = "password" name="password" id="password" placeholder="Password"> 
                                     </div>
                                     @error('username')
-                                                        <p class="text-danger text-center mt-1">{{$message}}</p>
-                                        @enderror
+                                    <p class="text-danger text-center mt-1">{{$message}}</p>
+                                    @enderror
                                     <button type="submit" class="btn btn-primary">Login</button>
                                 </div>
                     </form>

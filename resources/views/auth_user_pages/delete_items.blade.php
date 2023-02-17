@@ -1,21 +1,11 @@
+
 <?php
  use App\Models\Item;
  ?>
 @extends('layouts.master')
-<script>
-     $(document).ready(function(){
-     $("tr.checkboxInTable").click(function(){
-                        
-                        var id = $(this).attr("id");
-                        if($("#".concat(id,"_check")).is(':checked')){
-                            $("#".concat(id,"_check")).prop('checked', false);
-                        }else $("#".concat(id,"_check")).prop('checked', true);
-                        
-        });
-    });
-</script>
+
 @section('content')
-<div class="container text-center my-2">
+<div class="container text-center my-4">
     <h1>Delete Items</h1>
     <p>Use the table below to delete items from the inventory.</p>
 </div>
@@ -59,4 +49,17 @@
             </div>
         </div>
 
+@endsection
+@section('scripts')
+<script>
+     $(document).ready(function(){
+        $("tr.checkboxInTable").click(function(){                
+            var id = $(this).attr("id");
+            if($("#".concat(id,"_check")).is(':checked')){
+                $("#".concat(id,"_check")).prop('checked', false);
+            }
+            else $("#".concat(id,"_check")).prop('checked', true);
+        });
+    });
+</script>
 @endsection
