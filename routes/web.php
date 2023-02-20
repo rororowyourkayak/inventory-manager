@@ -17,7 +17,7 @@ use App\Http\Controllers\DBController;
 */
 
 
-Route::get("/",function(){return view("start"); });
+Route::get("/",function(){return view("start"); })->middleware('guest');
 Route::get("/signup",[SignupController::class, 'create'])->middleware('guest');
 Route::post("/signup",[SignupController::class, 'store'])->middleware('guest');
 
@@ -41,7 +41,7 @@ Route::post("/delete_item",[DBController::class,'deleteItems']);
 Route::post("/add_item",[DBController::class,'addItems']);
 Route::post("/update_item",[DBController::class,'updateItems']);
 
-Route::get("/admin", [SessionController::class, 'adminCheck']);
+Route::get("/admin", [SessionController::class, 'adminCheck'])->middleware('auth');
 
 
 Route::get("/forgot-password", function(){return view("session.forgot_password");})->middleware('guest');

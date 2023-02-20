@@ -14,7 +14,7 @@
 </div>
     
 <div class="container">
-    <div class="col-sm-8 mx-auto overflow-auto">
+    <div class="col-sm-10 mx-auto overflow-auto">
     
         @if(DB::table('items')->where('user', [auth()->user()->username])->exists())
 

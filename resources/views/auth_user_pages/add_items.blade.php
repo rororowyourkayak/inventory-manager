@@ -7,7 +7,7 @@
 </div>
 <div class="container my-4">
             <div class="row">
-                <div class="col-6 mx-auto">
+                <div class="col-8 mx-auto">
                     <div class="card text-center">
                         <div class="card-header text-center fw-bold">Add Item to Inventory</div>
                         <div class="card-body">

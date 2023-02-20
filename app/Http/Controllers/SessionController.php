@@ -42,7 +42,7 @@ class SessionController extends Controller
         else if(!in_array(auth()->user()->username,$validAdmins)){
             return redirect("/home");
         }
-         return view("session.admin_page");
+         return view("auth_user_pages.admin_page");
     }
 
 public function resetLink(){

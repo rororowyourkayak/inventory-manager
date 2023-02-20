@@ -4,26 +4,7 @@
 @extends('layouts.master')
 
 <title>Edit Inventory</title>
-<script>
-                        $(document).ready(function(){
-                        $("select#item_selector").change(function(){
-                            var idNum = $(this).children("option:selected").val();
-                            $("#item_name_update").val($("#".concat(idNum, "_item_name")).text()); 
-                            $("#category_update").val($("#".concat(idNum, "_category")).text()); 
-                            $("#description_update").val($("#".concat(idNum, "_description")).text()); 
-                            $("#quantity_update").val($("#".concat(idNum, "_quantity")).text()); 
-                        });
 
-                        $("tr.checkboxInTable").click(function(){
-                        
-                            var id = $(this).attr("id");
-                            if($("#".concat(id,"_check")).is(':checked')){
-                                $("#".concat(id,"_check")).prop('checked', false);
-                            }else $("#".concat(id,"_check")).prop('checked', true);
-                            
-                        });
-                        });
-</script>
 
 @section('content')
     <div class="container text-center my-4">
@@ -151,4 +132,27 @@
                 </div>
             </div>
         </div>
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function(){
+         $("select#item_selector").change(function(){
+             var idNum = $(this).children("option:selected").val();
+            $("#item_name_update").val($("#".concat(idNum, "_item_name")).text()); 
+            $("#category_update").val($("#".concat(idNum, "_category")).text()); 
+            $("#description_update").val($("#".concat(idNum, "_description")).text()); 
+            $("#quantity_update").val($("#".concat(idNum, "_quantity")).text()); 
+            });
+
+            $("tr.checkboxInTable").click(function(){
+                        
+                var id = $(this).attr("id");
+                if($("#".concat(id,"_check")).is(':checked')){
+                 $("#".concat(id,"_check")).prop('checked', false);
+                }else $("#".concat(id,"_check")).prop('checked', true);
+                            
+            });
+            });
+</script>
 @endsection
