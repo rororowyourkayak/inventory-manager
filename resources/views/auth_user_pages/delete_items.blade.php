@@ -10,9 +10,10 @@
     <p>Use the table below to delete items from the inventory.</p>
     <p>Note: Deleting items <b>cannot</b> be undone.</p>
 </div>
+
 <div class="container my-4">
             <div class="col-sm-10 text-center mx-auto"> 
-                @if(DB::table('items')->where('user', [auth()->user()->username])->exists())
+                @if($itemsExist)
                     <table class="table table-bordered text-center table-striped table-responsive-sm">
                         <thead class="thead text-white steelblueBG">
                             <tr> 
@@ -23,12 +24,12 @@
                                 <th>Delete?</th>
                             </tr>
                         </thead>
-                  @foreach(Item::where('user',auth()->user()->username)->get() as $item)
+                  @foreach($data as $item)
                     <tr>
-                        <td>{{$item->name}}</td>
-                        <td>{{$item->category}}</td>
-                        <td>{{$item->description}}</td>
-                        <td>{{$item->quantity}}</td>
+                        <td id="{{$item->id}}_item_name">{{$item->name}}</td>
+                        <td id="{{$item->id}}_category">{{$item->category}}</td>
+                        <td id="{{$item->id}}_description">{{$item->description}}</td>
+                        <td id="{{$item->id}}_quantity">{{$item->quantity}}</td>
                         <td>
                         <form action="/delete_item" method="post">
                             @csrf

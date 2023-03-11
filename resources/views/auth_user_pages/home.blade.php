@@ -16,7 +16,7 @@
 <div class="container">
     <div class="col-sm-10 mx-auto overflow-auto">
     
-        @if(DB::table('items')->where('user', [auth()->user()->username])->exists())
+        @if($itemsExist)
 
         <table class="table table-bordered text-center table-striped table-responsive-sm">
             <thead class="thead" style="background-color:steelblue; color:white;">
@@ -28,7 +28,7 @@
                 </tr>
             </thead>
                             
-            @foreach(Item::where('user',auth()->user()->username)->get() as $item)
+            @foreach( $data as $item)
                 <tr>
                     <td>{{$item->name}}</td>
                     <td>{{$item->category}}</td>

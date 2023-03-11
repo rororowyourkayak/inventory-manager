@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use App\Models\User; 
+use Illuminate\Support\Facades\DB;
 
 class SessionController extends Controller
 {
@@ -16,8 +18,8 @@ class SessionController extends Controller
 
     public function store(){
         $attributes = request()->validate([
-           'username' => ['required'],
-           'password' => ['required']
+           'username' => ['required', 'max:127'],
+           'password' => ['required', 'max:127']
         ]);
         if(auth()->attempt($attributes)){
             session()->regenerate();
@@ -35,14 +37,22 @@ class SessionController extends Controller
 
     public function adminCheck(){
        
-        $validAdmins = ["rforde",];//Array of valid admins
+        $validAdmins = ["rforde",];//Array of valid admin usernames
         if(auth()->guest()){
             return redirect("/");
         }
         else if(!in_array(auth()->user()->username,$validAdmins)){
             return redirect("/home");
         }
-         return view("auth_user_pages.admin_page");
+        $numUsers = DB::table('users')->count();
+        $numItems = DB::table('items')->count();
+        $allUsers = User::all(); 
+         return view("auth_user_pages.admin_page",compact('numUsers', 'numItems','allUsers'));
+    }
+
+
+    public function loadAccountPage(){
+        return view("auth_user_pages.account");
     }
 
 public function resetLink(){

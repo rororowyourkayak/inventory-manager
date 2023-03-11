@@ -20,8 +20,13 @@
                                         <input class="form-control mb-2 mr-sm-2 col-sm" type = "text" name="name" id="item_name" placeholder="Item Name" required>
                                         
                                         <label for="category" class="mb-2 mr-sm-2">Category:</label>
-                                        <input class="form-control mb-2 mr-sm-2 col-sm" name="category" id="category" placeholder="Category" required>
-                                            
+                                        <select name="category" id="category" class="form-control col-sm mb-2 mr-sm-2" required>
+                                        <option hidden disabled selected value> -- select a category -- </option>
+                                        @foreach($categories as $category)
+                                            <option value="{{$category->category}}">{{$category->category}}</option>
+                                        @endforeach
+                                        </select>
+
                                         <label for="description" class="mb-2 mr-sm-2">Description (Optional): </label>
                                         <textarea class="form-control mb-2 mr-sm-2 col-sm" rows="2" cols ="4" name="description" placeholder="Description" id="description"></textarea>
                                         
@@ -33,6 +38,10 @@
                                 </div>
                                 
                             </form>
+
+                            @foreach($errors->all() as $error)
+                                <p class="text-danger text-center mt-1">{{$error}}</p>
+                            @endforeach
                         </div>
                     </div>
                 </div> 

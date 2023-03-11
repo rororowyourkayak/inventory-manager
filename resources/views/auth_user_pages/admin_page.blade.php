@@ -13,35 +13,30 @@ use App\Models\User;
     </div>
 
     <div class="container text-center">
-    <p>Total Users: {{DB::table('users')->count()}}</p>
-    <p>Total Items: {{DB::table('items')->count()}}</p>
+    <p>Total Users: {{$numUsers}}</p>
+    <p>Total Items: {{$numItems}}</p>
     </div>
 
     <div class="container">
     <div class="col-sm-8 text-center mx-auto overflow-auto">
     
     <table class="table table-bordered table-striped table-responsive-sm text-center">
-        <thead class="thead-light" style="background-color:steelblue; color:white;">
+        <thead class="thead-light steelblueBG text-white">
                 <tr> 
                     <th>Username</th>
                     <th>Name</th>
-                    <th>Last Updated</th>
                     <th>Items Stored</th>
                 </tr>
         </thead>
-        @foreach(User::all() as $user)
+        @foreach($allUsers as $user)
 
             <tr>
                 <td>{{$user->username}}</td>
                 <td>{{$user->name}}</td>
-                <td>{{$user->updated_at}}</td>
                 <td>{{DB::table('items')->where('user',$user->username)->count()}}</td>
             </tr>
         @endforeach
     </table>
 </div>
 </div>
-
-
-
 @endsection

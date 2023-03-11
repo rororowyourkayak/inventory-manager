@@ -23,7 +23,7 @@ Route::post("/signup",[SignupController::class, 'store'])->middleware('guest');
 
 Route::view("/signup_success", "/signup.signup_success");
 
-Route::get("/home", function(){return view("auth_user_pages.home"); })->middleware('auth');
+Route::get("/home", [DBController::class, 'viewHomePage'])->middleware('auth');
 Route::get("/edit", function(){return view("auth_user_pages.edit"); })->middleware('auth');
 Route::get("/account", function(){return view("auth_user_pages.account");})->middleware('auth');
 
@@ -32,10 +32,10 @@ Route::get("/login", [SessionController::class, 'create'])->middleware('guest');
 
 Route::get("/logout", [SessionController::class, 'destroy'])->middleware('auth');
 
-Route::get("/add", function(){return view("auth_user_pages.add_items");})->middleware('auth');
-Route::get("/update", function(){return view("auth_user_pages.update_items");})->middleware('auth');
-Route::get("/delete", function(){return view("auth_user_pages.delete_items");})->middleware('auth');
-
+Route::get("/add", [DBController::class, 'viewAddPage'])->middleware('auth');
+Route::get("/update",  [DBController::class, 'viewUpdatePage'])->middleware('auth');
+Route::get("/delete",  [DBController::class, 'viewDeletePage'])->middleware('auth');
+Route::get("/updateLoader", [DBController::class, 'loadItemForUpdatepage'])->middleware('auth'); 
 
 Route::post("/delete_item",[DBController::class,'deleteItems']);
 Route::post("/add_item",[DBController::class,'addItems']);

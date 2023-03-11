@@ -22,7 +22,7 @@
                                     
                                     <option hidden disabled selected value> -- select an item -- </option>
                                     @foreach(Item::where('user',auth()->user()->username)->get() as $item)
-                                    <option id="{{$item->id}}_option" value={{$item->id}}>{{$item->name}}</option>
+                                    <option id="{{$item->id}}_option" value="{{$item->id}}" class="optionBar">{{$item->name}}</option>
                                     @endforeach
                                     
                             </select>
@@ -33,15 +33,21 @@
                                         <label for="item_name_update" class="mb-2 mr-sm-2">Item name: </label>
                                         <input class="form-control mb-2 mr-sm-2 col-sm" type = "text" name="name" id="item_name_update"  required>
                                         
-                                        <label for="category_update" class="mb-2 mr-sm-2">Category:</label>
-                                        <input class="form-control mb-2 mr-sm-2 col-sm" name="category" id="category_update"  required>
-                                            
+                                        <label for="category" class="mb-2 mr-sm-2">Category:</label>
+                                        <select name="category" id="category_update" class="form-control col-sm mb-2 mr-sm-2" required>
+                                        <option hidden disabled selected value> -- select a category -- </option>
+                                        @foreach($categories as $category)
+                                            <option value="{{$category->category}}">{{$category->category}}</option>
+                                        @endforeach
+                                        </select>
+
                                         <label for="description_update" class="mb-2 mr-sm-2">Description (Optional): </label>
                                         <textarea class="form-control mb-2 mr-sm-2 col-sm" rows="2" cols ="4" name="description"  id="description_update"></textarea>
                                         
                                         <label for="quantity_update" class="mb-2 mr-sm-2">Quantity:</label>
                                         <input class="mb-2 mr-sm-2 col-sm" type="number" name="quantity" id="quantity_update" min="1" required>
 
+                                        
                                     </div>
                                     <button type="submit" class="btn btn-primary mx-auto">Update</button>
                                 </div>
@@ -55,16 +61,22 @@
 
 @endsection
 
+
 @section('scripts')
 <script>
     $(document).ready(function(){
         $("#item_selector").change(function(){
             var idNum = $(this).children("option:selected").val();
-                $("#item_name_update").val($("#".concat(idNum, "_item_name")).text()); 
-                console.log($("#item_name_update").val());
-                $("#category_update").val($("#".concat(idNum, "_category")).text()); 
-                $("#description_update").val($("#".concat(idNum, "_description")).text()); 
-                $("#quantity_update").val($("#".concat(idNum, "_quantity")).text()); 
+               
+                $.ajax({ method: "GET", url: "/updateLoader", 
+                data: {id: idNum },
+                success: function(result){
+                    var itemData = JSON.parse(result);
+                    $("#item_name_update").val(itemData["name"]);
+                    $("#category_update").val(itemData["category"]);
+                    $("#description_update").val(itemData["description"]);
+                    $("#quantity_update").val(itemData["quantity"]);
+                }});
         });
     });
 </script>

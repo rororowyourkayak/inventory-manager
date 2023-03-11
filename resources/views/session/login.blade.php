@@ -25,9 +25,10 @@
                                         <label for="password">Password: </label>
                                         <input class="form-control ms-1" type = "password" name="password" id="password" placeholder="Password"> 
                                     </div>
-                                    @error('username')
-                                    <p class="text-danger text-center mt-1">{{$message}}</p>
-                                    @enderror
+                                    @foreach($errors->all() as $error)
+                                    <p class="text-danger text-center mt-1">{{$error}}</p>
+                                    @endforeach
+                                    
                                     <button type="submit" class="btn btn-primary">Login</button>
                                 </div>
                     </form>

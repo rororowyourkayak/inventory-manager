@@ -14,10 +14,10 @@ class SignupController extends Controller
     
     public function store(){
         $attributes = request()->validate([
-            'name' => ['required','max:255'],
+            'name' => ['required','max:127'],
             'email' => ['required','email','max:255',Rule::unique('users','email')],
-            'username' => ['required','max:255',Rule::unique('users','username')],
-            'password' => ['required','min:8','max:255', 'regex:/^(?=.*[0-9])(?=.*[A-Z]).{8,}$/']
+            'username' => ['required','max:127',Rule::unique('users','username')],
+            'password' => ['required','min:8','max:127', 'regex:/^(?=.*[0-9])(?=.*[A-Z]).{8,}$/']
         ]);
         
         $attributes['password'] = bcrypt($attributes['password']);
