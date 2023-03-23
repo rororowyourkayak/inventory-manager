@@ -11,7 +11,7 @@
     <div class="container mt-2 mb-4">
         <div class="col-sm-6 mx-auto">
             <div class="card text-center">
-                <div class="card-header fw-bold">Login</div>
+            <div class="card-header fw-bold">Login</div>
                 <div class="card-body">
                     <form action ="session" method ="post">
                                 @csrf

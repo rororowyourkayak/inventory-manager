@@ -1,27 +1,36 @@
-<?php
- use App\Models\Item;
- ?>
+
 @extends('layouts.master')
 
 @section('content')
+
 <div class="container text-center my-4">
     <h1>Update Items</h1>
     <p>Use the box below to add update entries in the inventory.</p>
 </div>
-
+@isset($success)
+    <div class="container col-8">
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                Item was updated successfully. 
+        </div>
+    </div>
+@endisset
 <div class="container my-4">
             <div class="row">
                 <div class="col-8 mx-auto">
                     <div class="card text-center">
                         <div class="card-header fw-bold">Update Item</div>
                         <div class="card-body">
+                        @foreach($errors->all() as $error)
+                                <p class="text-danger text-center mt-1">{{$error}}</p>
+                        @endforeach
                         <form action="/update_item" method="post">
                             @csrf
                             <label for="item_selector" class="mb-2 mr-sm-2 ">Choose item to change:</label>
                             <select name="item_selector" class="col-sm-8 mb-2 mr-sm-2" id="item_selector">
                                     
                                     <option hidden disabled selected value> -- select an item -- </option>
-                                    @foreach(Item::where('user',auth()->user()->username)->get() as $item)
+                                    @foreach($data as $item)
                                     <option id="{{$item->id}}_option" value="{{$item->id}}" class="optionBar">{{$item->name}}</option>
                                     @endforeach
                                     
@@ -46,8 +55,6 @@
                                         
                                         <label for="quantity_update" class="mb-2 mr-sm-2">Quantity:</label>
                                         <input class="mb-2 mr-sm-2 col-sm" type="number" name="quantity" id="quantity_update" min="1" required>
-
-                                        
                                     </div>
                                     <button type="submit" class="btn btn-primary mx-auto">Update</button>
                                 </div>
@@ -55,6 +62,7 @@
                         </div>
                     </div>
                 </div>
+                
                 </div> 
             </div>
 </div>
@@ -67,10 +75,10 @@
     $(document).ready(function(){
         $("#item_selector").change(function(){
             var idNum = $(this).children("option:selected").val();
-               
-                $.ajax({ method: "GET", url: "/updateLoader", 
-                data: {id: idNum },
-                success: function(result){
+                $.ajax({ method: "GET", 
+                    url: "/updateLoader", 
+                    data: {id: idNum },
+                    success: function(result){
                     var itemData = JSON.parse(result);
                     $("#item_name_update").val(itemData["name"]);
                     $("#category_update").val(itemData["category"]);

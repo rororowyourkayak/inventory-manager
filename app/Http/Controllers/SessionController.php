@@ -35,20 +35,7 @@ class SessionController extends Controller
         return redirect('/'); 
     }
 
-    public function adminCheck(){
-       
-        $validAdmins = ["rforde",];//Array of valid admin usernames
-        if(auth()->guest()){
-            return redirect("/");
-        }
-        else if(!in_array(auth()->user()->username,$validAdmins)){
-            return redirect("/home");
-        }
-        $numUsers = DB::table('users')->count();
-        $numItems = DB::table('items')->count();
-        $allUsers = User::all(); 
-         return view("auth_user_pages.admin_page",compact('numUsers', 'numItems','allUsers'));
-    }
+
 
 
     public function loadAccountPage(){

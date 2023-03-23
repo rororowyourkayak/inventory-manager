@@ -11,6 +11,7 @@
 </head>
 <style>
     .steelblueBG{background-color:#4682B4;}
+    
 </style>
 @auth
 <nav class="navbar navbar-expand-sm sticky-top navbar-dark steelblueBG">

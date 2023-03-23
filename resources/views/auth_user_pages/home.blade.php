@@ -18,13 +18,14 @@
     
         @if($itemsExist)
 
-        <table class="table table-bordered text-center table-striped table-responsive-sm">
+        <table id="itemsTable" class="table table-bordered text-center table-striped table-responsive-sm">
             <thead class="thead" style="background-color:steelblue; color:white;">
                 <tr> 
                     <th>Item</th>
                     <th>Category</th>
                     <th>Description</th>
                     <th>Quantity</th>
+                    <th>Last Updated</th>
                 </tr>
             </thead>
                             
@@ -34,6 +35,7 @@
                     <td>{{$item->category}}</td>
                     <td>{{$item->description}}</td>
                     <td>{{$item->quantity}}</td>
+                    <td>{{$item->updated_at}}</td>
                 </tr>    
             @endforeach
                         
@@ -44,4 +46,16 @@
     </div>    
 </div>
                 
+@endsection
+
+@section('scripts')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+<script>
+    $(document).ready( function () {
+    $('#itemsTable').DataTable();
+} );
+</script>
+
 @endsection

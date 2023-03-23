@@ -1,7 +1,5 @@
 
-<?php
- use App\Models\Item;
- ?>
+
 @extends('layouts.master')
 
 @section('content')
@@ -14,7 +12,7 @@
 <div class="container my-4">
             <div class="col-sm-10 text-center mx-auto"> 
                 @if($itemsExist)
-                    <table class="table table-bordered text-center table-striped table-responsive-sm">
+                    <table id="itemsTable" class="table table-bordered text-center table-striped table-responsive-sm">
                         <thead class="thead text-white steelblueBG">
                             <tr> 
                                 <th>Item</th>
@@ -45,5 +43,21 @@
             
             </div>
 </div>
+@endsection
+
+@section('scripts')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+<script>
+    $(document).ready( function () {
+    $('#itemsTable').DataTable( {
+  columnDefs: [
+    { orderable: false, targets: 4 }
+  ]
+});
+} );
+</script>
+
 @endsection
 

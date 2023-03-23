@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\DBController;
+use App\Http\Controllers\AdminController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,11 +20,11 @@ use App\Http\Controllers\DBController;
 */
 
 
-Route::get("/",function(){return view("start"); })->middleware('guest');
+Route::get("/",function(){return view("start"); })->middleware('guest')->name('/');
 Route::get("/signup",[SignupController::class, 'create'])->middleware('guest');
 Route::post("/signup",[SignupController::class, 'store'])->middleware('guest');
 
-Route::view("/signup_success", "/signup.signup_success");
+Route::view("/signup_success", "/signup.signup_success")->middleware('guest');;
 
 Route::get("/home", [DBController::class, 'viewHomePage'])->middleware('auth');
 Route::get("/edit", function(){return view("auth_user_pages.edit"); })->middleware('auth');
@@ -32,16 +35,22 @@ Route::get("/login", [SessionController::class, 'create'])->middleware('guest');
 
 Route::get("/logout", [SessionController::class, 'destroy'])->middleware('auth');
 
-Route::get("/add", [DBController::class, 'viewAddPage'])->middleware('auth');
-Route::get("/update",  [DBController::class, 'viewUpdatePage'])->middleware('auth');
-Route::get("/delete",  [DBController::class, 'viewDeletePage'])->middleware('auth');
+Route::get("/add", [DBController::class, 'viewAddPage'])->middleware('auth')->name('add');
+Route::get("/update",  [DBController::class, 'viewUpdatePage'])->middleware('auth')->name('update');
+Route::get("/delete",  [DBController::class, 'viewDeletePage'])->middleware('auth')->name('delete');
 Route::get("/updateLoader", [DBController::class, 'loadItemForUpdatepage'])->middleware('auth'); 
 
 Route::post("/delete_item",[DBController::class,'deleteItems']);
 Route::post("/add_item",[DBController::class,'addItems']);
 Route::post("/update_item",[DBController::class,'updateItems']);
 
-Route::get("/admin", [SessionController::class, 'adminCheck'])->middleware('auth');
+Route::get("/admin", [AdminController::class, 'viewAdminPage'])->middleware('admin')->name('admin');
+Route::post("/admin_delete_user", [AdminController::class, 'deleteUser'])->middleware('admin'); 
+Route::post("/add_category", [AdminController::class, 'addCategory'])->middleware('admin');
+Route::post("/update_category", [AdminController::class, 'updateCategory'])->middleware('admin'); 
+Route::post("/delete_category", [AdminController::class, 'deleteCategory'])->middleware('admin'); 
+
+
 
 
 Route::get("/forgot-password", function(){return view("session.forgot_password");})->middleware('guest');
