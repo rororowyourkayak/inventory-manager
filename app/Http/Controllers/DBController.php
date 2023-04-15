@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Item;
+use App\Models\User;
 use App\Models\Category; 
-
-
-
-$updateSuccess = NULL; 
 
 class DBController extends Controller
 {
@@ -29,11 +27,9 @@ class DBController extends Controller
    }
 
    public function viewUpdatePage(){
-      global $updateSuccess; 
       return view("auth_user_pages.update_items", array(
          'categories'=>Category::all(),
          'data'=>Item::where('user',auth()->user()->username)->get(),
-         //'success'=>$updateSuccess
       ));
    }
 
@@ -52,7 +48,7 @@ class DBController extends Controller
       foreach($items as $item){
          Item::where('id',$item)->delete();
          foreach(DB::table('files')->where('item_id', $item)->get() as $photo){
-            Storage::delete($photo -> filename); 
+            Storage::disk('public')->delete($photo -> filename); 
          }
          DB::table('files')->where('item_id', $item) -> delete(); 
       }      
@@ -68,7 +64,7 @@ class DBController extends Controller
             'category' => ['required', 'max:127'],
             'description' => ['max:511'],
             'quantity' => ['required', 'numeric', 'integer'],
-            //'file' => ['image','max:2048'],
+            'file' => ['max:2048'],
          ]);
        $items["user"]  = auth()->user()->username;
 
@@ -76,10 +72,11 @@ class DBController extends Controller
 
        if(request()->hasFile('file')){
        foreach (request()->file as $photo) {
-         $filename = $photo->store('');
+         $filename = $photo->store(auth()->user()->username, 'public');
          DB::table('files')->insert([
             'item_id' => $newItem->id,
          'filename' => $filename,
+         'original_name'=>$photo->getClientOriginalName(),
         ]);
       }
    }
@@ -88,8 +85,8 @@ class DBController extends Controller
    }
 
    public function updateItems(){
-      /* global $updateSuccess; 
-      $updateSuccess = NULL;  */
+      
+      
       $items = request() -> validate([
          'item_selector'=>['required', 'numeric', 'integer'],
          'name' => ['required', 'max:127'],
@@ -105,7 +102,6 @@ class DBController extends Controller
       "category" => $items["category"],
       "description" => $items["description"],
       "quantity" => $items["quantity"]]);
-      //$updateSuccess = 1;
       return to_route('update');
    }
 
@@ -120,6 +116,19 @@ class DBController extends Controller
       "quantity"=>$item->quantity);
 
       echo json_encode($properties);
+     // return response()->json($properties);
+   
 
+   }
+
+   public function viewSingleItemPage(Item $item){ 
+         
+         return view('auth_user_pages.item', array(
+            'item' => $item, 
+            'photos' => DB::table('files')->where('item_id', $item->id)->get(),
+            'photoCount' => DB::table('files')->where('item_id', $item->id)->count(),
+
+         ));
+      
    }
 }

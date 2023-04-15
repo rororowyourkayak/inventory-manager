@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Models\User; 
 use App\Models\Item; 
 use App\Models\Category; 
@@ -29,7 +30,7 @@ class AdminController extends Controller
 
         Item::where('user', $user["name"])->delete(); 
         User::where('username',$user["name"])->delete(); 
-
+        Storage::deleteDirectory($user["name"]); 
         return to_route('admin'); 
     }
     public function addCategory(){

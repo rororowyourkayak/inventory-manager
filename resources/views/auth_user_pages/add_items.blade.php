@@ -23,10 +23,10 @@
                                     <div class="form-group">
                                         
                                         <label for="item_name" class="mb-2 mr-sm-2">Item name: </label>
-                                        <input class="form-control mb-2 mr-sm-2 col-sm" type = "text" name="name" id="item_name" placeholder="Item Name" required>
+                                        <input class="form-control mb-2 mr-sm-2 col-sm" type = "text" name="name" id="item_name" placeholder="Item Name" required value="{{ old('name') }}">
                                         
                                         <label for="category" class="mb-2 mr-sm-2">Category:</label>
-                                        <select name="category" id="category" class="form-control col-sm mb-2 mr-sm-2" required>
+                                        <select name="category" id="category" class="form-control col-sm mb-2 mr-sm-2" required value="{{ old('category') }}">
                                         <option hidden disabled selected value> -- select a category -- </option>
                                         @foreach($categories as $category)
                                             <option value="{{$category->category}}">{{$category->category}}</option>
@@ -34,13 +34,13 @@
                                         </select>
 
                                         <label for="description" class="mb-2 mr-sm-2">Description (Optional): </label>
-                                        <textarea class="form-control mb-2 mr-sm-2 col-sm" rows="2" cols ="4" name="description" placeholder="Description" id="description"></textarea>
+                                        <textarea class="form-control mb-2 mr-sm-2 col-sm" rows="2" cols ="4" name="description" placeholder="Description" id="description" value="{{ old('description') }}"></textarea>
                                         
                                         <label for="quantity" class="mb-2 mr-sm-2">Quantity:</label>
-                                        <input class="form-control mb-2 mr-sm-2 col-sm" type="number" name="quantity" id="quantity" min="1" value="1" required>
+                                        <input class="form-control mb-2 mr-sm-2 col-sm" type="number" name="quantity" id="quantity" min="1" value="1" required value="{{ old('quantity') }}">
 
                                         <label for="file" class="mb-2 mr-sm-2">Upload Photos (Optional):</label>
-                                        <input class="form-control mb-2 mr-sm-2 col-sm" type="file" name="file[]" id="file" multiple accept=".png, .jpg, .jpeg">
+                                        <input class="form-control mb-2 mr-sm-2 col-sm" type="file" name="file[]" id="file" accept=".png, .jpg, .jpeg" multiple>
 
                                     </div>
                                     <button type="submit" class="btn btn-primary mx-auto">Add</button>

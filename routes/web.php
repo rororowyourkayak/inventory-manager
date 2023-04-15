@@ -40,9 +40,11 @@ Route::get("/update",  [DBController::class, 'viewUpdatePage'])->middleware('aut
 Route::get("/delete",  [DBController::class, 'viewDeletePage'])->middleware('auth')->name('delete');
 Route::get("/updateLoader", [DBController::class, 'loadItemForUpdatepage'])->middleware('auth'); 
 
-Route::post("/delete_item",[DBController::class,'deleteItems']);
-Route::post("/add_item",[DBController::class,'addItems']);
-Route::post("/update_item",[DBController::class,'updateItems']);
+Route::get("/items/{item}", [DBController::class, 'viewSingleItemPage'])->middleware('auth');
+
+Route::post("/delete_item",[DBController::class,'deleteItems'])->middleware('auth');;
+Route::post("/add_item",[DBController::class,'addItems'])->middleware('auth');;
+Route::post("/update_item",[DBController::class,'updateItems'])->middleware('auth');;
 
 Route::get("/admin", [AdminController::class, 'viewAdminPage'])->middleware('admin')->name('admin');
 Route::post("/admin_delete_user", [AdminController::class, 'deleteUser'])->middleware('admin'); 

@@ -38,8 +38,9 @@
                     </tr>
                     @endforeach
                     </table> 
-                    @else({{<p><b>There are currently no entries in the inventory.</b></br>Add items using the form below.</p>}})
+                    @else <p> <b>There are currently no entries in the inventory.</b></br>Add Items on the <a href="/add">Add page</a>.</p>
                     @endif
+                    
             
             </div>
 </div>

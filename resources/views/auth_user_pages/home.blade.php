@@ -1,5 +1,4 @@
 
-<?php use App\Models\Item; ?>
 @extends('layouts.master')
 
 <title>Inventory Home</title>
@@ -14,7 +13,7 @@
 </div>
     
 <div class="container">
-    <div class="col-sm-10 mx-auto overflow-auto">
+    <div class="col-sm-10 mx-auto overflow-auto text-center">
     
         @if($itemsExist)
 
@@ -25,23 +24,21 @@
                     <th>Category</th>
                     <th>Description</th>
                     <th>Quantity</th>
-                    <th>Last Updated</th>
                 </tr>
             </thead>
                             
             @foreach( $data as $item)
                 <tr>
-                    <td>{{$item->name}}</td>
+                    <td><a href="/items/{{$item->id}}">{{$item->name}}</a></td>
                     <td>{{$item->category}}</td>
                     <td>{{$item->description}}</td>
                     <td>{{$item->quantity}}</td>
-                    <td>{{$item->updated_at}}</td>
                 </tr>    
             @endforeach
                         
         </table> 
             
-            @else({{<p><b>There are currently no entries in the inventory.</b><br>Add Items on the <a href="edit">Edit page</a>.</p>}})                                   
+            @else <p><b>There are currently no entries in the inventory.</b><br>Add Items on the <a href="/add">Add page</a>.</p>                                
             @endif
     </div>    
 </div>
