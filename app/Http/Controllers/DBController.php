@@ -30,6 +30,7 @@ class DBController extends Controller
       return view("auth_user_pages.update_items", array(
          'categories'=>Category::all(),
          'data'=>Item::where('user',auth()->user()->username)->get(),
+         
       ));
    }
 
@@ -89,7 +90,7 @@ class DBController extends Controller
       
       $items = request() -> validate([
          'item_selector'=>['required', 'numeric', 'integer'],
-         'name' => ['required', 'max:127'],
+         'name' => ['required', 'max:127', Rule::unique('items', 'name')],
          'category' => ['required', 'max:127'],
          'description' => ['max:511'],
          'quantity' => ['required', 'numeric', 'integer'],
@@ -110,10 +111,14 @@ class DBController extends Controller
       $request = request() -> input();
       
       $item = Item::where('id', $request['id'])->first();
+      $photos = DB::table('files')->where('item_id',$request['id'])->get();
+
       $properties = array("name" => $item -> name, 
       "category"=>$item->category, 
       "description"=>$item->description, 
-      "quantity"=>$item->quantity);
+      "quantity"=>$item->quantity,
+      "photos"=>$photos
+      );
 
       echo json_encode($properties);
      // return response()->json($properties);

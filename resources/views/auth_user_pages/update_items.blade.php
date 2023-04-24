@@ -7,14 +7,7 @@
     <h1>Update Items</h1>
     <p>Use the box below to add update entries in the inventory.</p>
 </div>
-@isset($success)
-    <div class="container col-8">
-        <div class="alert alert-success alert-dismissible">
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                Item was updated successfully. 
-        </div>
-    </div>
-@endisset
+
 <div class="container my-4">
             <div class="row">
                 <div class="col-8 mx-auto">
@@ -64,9 +57,21 @@
                 </div>
                 
                 </div> 
+                
             </div>
-</div>
+            <div class="container" id="photoDelete"></div>
+            <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-header text-center">Update Photos</div>
+                        <div class="card-body">
+                            <form action="/add_new_photos" method="POST">
+                                @csrf
 
+                            </form>
+                        </div>
+                    </div>
+                </div>
+</div>
 @endsection
 
 
@@ -84,6 +89,18 @@
                     $("#category_update").val(itemData["category"]);
                     $("#description_update").val(itemData["description"]);
                     $("#quantity_update").val(itemData["quantity"]);
+
+                    $("#photoDelete").html("");
+                    if(typeof itemData["photos"]!=="undefined"){
+                        for(var n = 0; n < itemData["photos"].length; n++){
+                            $("#photoDelete").append(`<img src=${itemData["photos"][n]["filename"]}`);
+                        }
+                       // $("#photoDelete").append(`<img src=${itemData["photos"][0]["filename"]}>`);
+                        /* for(var photo in itemData["photos"]){
+                            $("#photoDelete").append(`<img src=${photo["filename"]} id=${photo["filename"]}`);
+                        } */
+                    }
+                   
                 }});
         });
     });

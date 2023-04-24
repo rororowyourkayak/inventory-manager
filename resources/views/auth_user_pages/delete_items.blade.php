@@ -10,11 +10,11 @@
 </div>
 
 <div class="container my-4">
-            <div class="col-sm-10 text-center mx-auto"> 
+            <div class="col-sm-10 text-center mx-auto">
                 @if($itemsExist)
                     <table id="itemsTable" class="table table-bordered text-center table-striped table-responsive-sm">
                         <thead class="thead text-white steelblueBG">
-                            <tr> 
+                            <tr>
                                 <th>Item</th>
                                 <th>Category</th>
                                 <th>Description</th>
@@ -37,11 +37,11 @@
                     </td>
                     </tr>
                     @endforeach
-                    </table> 
+                    </table>
                     @else <p> <b>There are currently no entries in the inventory.</b></br>Add Items on the <a href="/add">Add page</a>.</p>
                     @endif
-                    
-            
+
+
             </div>
 </div>
 @endsection
@@ -61,4 +61,3 @@
 </script>
 
 @endsection
-

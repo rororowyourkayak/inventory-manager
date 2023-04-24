@@ -31,7 +31,7 @@ Route::get("/edit", function(){return view("auth_user_pages.edit"); })->middlewa
 Route::get("/account", function(){return view("auth_user_pages.account");})->middleware('auth');
 
 Route::post("/session",[SessionController::class, 'store'])->middleware('guest');
-Route::get("/login", [SessionController::class, 'create'])->middleware('guest');
+Route::get("/login", [SessionController::class, 'create'])->middleware('guest')->name('login');
 
 Route::get("/logout", [SessionController::class, 'destroy'])->middleware('auth');
 
@@ -59,6 +59,6 @@ Route::get("/forgot-password", function(){return view("session.forgot_password")
 Route::post('/forgot-password', [SessionController::class,'resetLink'])->middleware('guest');
 
 Route::get('/reset-password/{token}', function ($token) {
-    return view('session.reset-password', ['token' => $token]);
+    return view('session.reset_password', ['token' => $token]);
 })->middleware('guest')->name('password.reset');
 Route::post('/reset-password', [SessionController::class, 'resetPassword'])->middleware('guest'); 

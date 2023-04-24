@@ -12,7 +12,7 @@
             <div class="card text-center">
                 <div class="card-header font-weight-bold">Reset</div>
                 <div class="card-body">
-                    <form action ="session" method ="post">
+                    <form action ="/reset-password" method ="post">
                         @csrf
                         <input type="hidden" name="token" value={{$token}}>
                         <div class="container mb-3">
@@ -29,7 +29,7 @@
                                 <input type = "password" name="password_confirmation" id="password_c" placeholder="Retype password" value ="{{ old('password_c') }}" > 
                             </div>
                             </div> 
-                            <button type="submit" class="btn btn-primary mx-auto">Get Link</button> 
+                            <button type="submit" class="btn btn-primary mx-auto">Reset</button> 
                     </form>
                 </div>
             </div>

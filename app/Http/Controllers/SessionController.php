@@ -59,7 +59,7 @@ public function resetPassword(){
         request()->validate([
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|min:8|confirmed|regex:/^(?=.*[0-9])(?=.*[A-Z]).{8,}$/',
         ]);
      
         $status = Password::reset(

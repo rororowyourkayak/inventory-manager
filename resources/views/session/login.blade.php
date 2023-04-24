@@ -36,6 +36,12 @@
                         <p>New User?</p>
                         <button type="button" class="btn btn-primary" onClick= "location.href = '/signup'">Sign Up</button>
                     </div>
+                    <div class="container">
+                        <p>Forgot Password?</p>
+                        <button type="button" class="btn btn-primary" onClick= "location.href = '/forgot-password'">Reset Password</button>
+                    </div>
+                    
+                    
         </div>
     </div>
 @endsection

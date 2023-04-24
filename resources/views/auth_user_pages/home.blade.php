@@ -5,44 +5,44 @@
 
 @section('content')
 
-    
-<div class="container text-center my-4"> 
+
+<div class="container text-center my-4">
             <h1>Inventory Home</h1>
             <p>Welcome back {{auth()->user()->name}}! View your inventory below.</p>
-            
+
 </div>
-    
+
 <div class="container">
     <div class="col-sm-10 mx-auto overflow-auto text-center">
-    
+
         @if($itemsExist)
 
         <table id="itemsTable" class="table table-bordered text-center table-striped table-responsive-sm">
             <thead class="thead" style="background-color:steelblue; color:white;">
-                <tr> 
+                <tr>
                     <th>Item</th>
                     <th>Category</th>
                     <th>Description</th>
                     <th>Quantity</th>
                 </tr>
             </thead>
-                            
+
             @foreach( $data as $item)
                 <tr>
                     <td><a href="/items/{{$item->id}}">{{$item->name}}</a></td>
                     <td>{{$item->category}}</td>
                     <td>{{$item->description}}</td>
                     <td>{{$item->quantity}}</td>
-                </tr>    
+                </tr>
             @endforeach
-                        
-        </table> 
-            
-            @else <p><b>There are currently no entries in the inventory.</b><br>Add Items on the <a href="/add">Add page</a>.</p>                                
+
+        </table>
+
+            @else <p><b>There are currently no entries in the inventory.</b><br>Add Items on the <a href="/add">Add page</a>.</p>
             @endif
-    </div>    
+    </div>
 </div>
-                
+
 @endsection
 
 @section('scripts')
