@@ -24,6 +24,7 @@
                     <th>Category</th>
                     <th>Description</th>
                     <th>Quantity</th>
+                    <th>Last Updated</th>
                 </tr>
             </thead>
 
@@ -33,11 +34,12 @@
                     <td>{{$item->category}}</td>
                     <td>{{$item->description}}</td>
                     <td>{{$item->quantity}}</td>
+                    <td>{{$item->updated_at}}</td>
+
                 </tr>
             @endforeach
 
         </table>
-
             @else <p><b>There are currently no entries in the inventory.</b><br>Add Items on the <a href="/add">Add page</a>.</p>
             @endif
     </div>

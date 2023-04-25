@@ -33,6 +33,24 @@ class AdminController extends Controller
         Storage::deleteDirectory($user["name"]); 
         return to_route('admin'); 
     }
+
+    /* public function automate(){
+        $cats = Category::all(); 
+        $c = [];
+        foreach($cats as $cat){
+            array_push($c, $cat->category);
+        }
+        for($i = 0; $i < 500; $i++){
+            $rand = rand(0,count($c)-1);
+            Item::create([
+                "user"=>"mjordan",
+                "name"=>"testItem".($i+1),
+                "category"=>$c[$rand],
+                "description"=>"This is test item number ".($i+1)
+            ]);
+        }
+        return to_route('/');
+    } */
     public function addCategory(){
 
     }

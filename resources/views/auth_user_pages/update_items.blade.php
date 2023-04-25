@@ -17,7 +17,7 @@
                         @foreach($errors->all() as $error)
                                 <p class="text-danger text-center mt-1">{{$error}}</p>
                         @endforeach
-                        <form action="/update_item" method="post">
+                        <form action="/update_item" method="post" enctype="multipart/form-data">
                             @csrf
                             <label for="item_selector" class="mb-2 mr-sm-2 ">Choose item to change:</label>
                             <select name="item_selector" class="col-sm-8 mb-2 mr-sm-2" id="item_selector">
@@ -47,7 +47,11 @@
                                         <textarea class="form-control mb-2 mr-sm-2 col-sm" rows="2" cols ="4" name="description"  id="description_update"></textarea>
                                         
                                         <label for="quantity_update" class="mb-2 mr-sm-2">Quantity:</label>
-                                        <input class="mb-2 mr-sm-2 col-sm" type="number" name="quantity" id="quantity_update" min="1" required>
+                                        <input class="form-control mb-2 mr-sm-2 col-sm" type="number" name="quantity" id="quantity_update" min="1" required>
+
+                                        <label for="file" class="mb-2 mr-sm-2">Upload Photos (Optional):</label>
+                                        <input class="form-control mb-2 mr-sm-2 col-sm" type="file" name="file[]" id="file" accept=".png, .jpg, .jpeg" multiple>
+
                                     </div>
                                     <button type="submit" class="btn btn-primary mx-auto">Update</button>
                                 </div>
@@ -59,18 +63,10 @@
                 </div> 
                 
             </div>
-            <div class="container" id="photoDelete"></div>
-            <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-header text-center">Update Photos</div>
-                        <div class="card-body">
-                            <form action="/add_new_photos" method="POST">
-                                @csrf
+            <div class="container" id="photoDelete">
 
-                            </form>
-                        </div>
-                    </div>
-                </div>
+            </div>
+            
 </div>
 @endsection
 
@@ -91,14 +87,22 @@
                     $("#quantity_update").val(itemData["quantity"]);
 
                     $("#photoDelete").html("");
-                    if(typeof itemData["photos"]!=="undefined"){
-                        for(var n = 0; n < itemData["photos"].length; n++){
-                            $("#photoDelete").append(`<img src=${itemData["photos"][n]["filename"]}`);
-                        }
-                       // $("#photoDelete").append(`<img src=${itemData["photos"][0]["filename"]}>`);
-                        /* for(var photo in itemData["photos"]){
-                            $("#photoDelete").append(`<img src=${photo["filename"]} id=${photo["filename"]}`);
-                        } */
+                    
+                    if(itemData["photos"][0]){
+
+                        $("#photoDelete").html("<table id=\"deleteTable\" class=\"table table-bordered text-center table-striped table-responsive-sm\"></table>");
+                        $("#deleteTable").html("<thead class=\"steelblueBG\"><tr>\"<th>Photo</th><th>Filename</th><th>Delete?</th>\"</tr></thead>");
+
+                        var photos = itemData["photos"]; 
+                        
+                         for(var photo of photos){
+                            var photoDeleteForm = `<form action="/delete_item_photo" method="post">
+                            @csrf
+                            <input type="hidden" name="delete" value=${photo["filename"]}>
+                            <button type="submit" class="btn btn-danger mx-auto">Delete</button>
+                         </form>`;
+                            $("#deleteTable").append(`<tr> <td><img src=${photo["filename"]} id=${photo["filename"]} height=100 width=100 alt="photo"></td> <td>${photo["original_name"]}</td> <td>${photoDeleteForm}</td> </tr>`);
+                        } 
                     }
                    
                 }});

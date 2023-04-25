@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <style>
-    .steelblueBG{background-color:#4682B4;} 
+    .steelblueBG{background-color:#4682B4; color:white; } 
     
 </style>
 @auth
@@ -25,6 +25,7 @@
                 <li class="nav-item"><a class="nav-link" href="/add">Add</a></li>
                 <li class="nav-item"><a class="nav-link" href="/update">Update</a></li>
                 <li class="nav-item"><a class="nav-link" href="/delete">Delete</a></li>
+                <li class="nav-item"><a href="/stats" class="nav-link">Stats</a></li>
             </ul>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">

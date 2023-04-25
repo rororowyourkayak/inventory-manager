@@ -16,9 +16,22 @@ class DBController extends Controller
     
 
    public function viewHomePage(){
-      $data = Item::where('user',auth()->user()->username)->get(); 
-      $itemsExist = DB::table('items')->where('user', [auth()->user()->username])->exists(); 
-      return view("auth_user_pages.home", compact('data', 'itemsExist'));
+      
+
+      return view("auth_user_pages.home", array(
+         'data' =>Item::where('user',auth()->user()->username)->get(),
+          'itemsExist'=>DB::table('items')->where('user', [auth()->user()->username])->exists(),
+         
+         ));
+   }
+   public function viewStatsPage(){
+      $categoryCounts = []; 
+      foreach(Category::all() as $cat){
+         $categoryCounts[$cat->category] = Item::where('user', auth()->user()->username)->where('category',$cat->category)->count();
+      }
+      return view("auth_user_pages.stats",array(
+         'categories'=>$categoryCounts, 
+      ));
    }
    public function viewAddPage(){
       
@@ -90,10 +103,11 @@ class DBController extends Controller
       
       $items = request() -> validate([
          'item_selector'=>['required', 'numeric', 'integer'],
-         'name' => ['required', 'max:127', Rule::unique('items', 'name')],
+         'name' => ['required', 'max:127', /* Rule::unique('items', 'name') */],
          'category' => ['required', 'max:127'],
          'description' => ['max:511'],
          'quantity' => ['required', 'numeric', 'integer'],
+         'file' => ['max:2048'],
          
       ]);
 
@@ -103,7 +117,19 @@ class DBController extends Controller
       "category" => $items["category"],
       "description" => $items["description"],
       "quantity" => $items["quantity"]]);
-      return to_route('update');
+
+      if(request()->hasFile('file')){
+         foreach (request()->file as $photo) {
+           $filename = $photo->store(auth()->user()->username, 'public');
+           DB::table('files')->insert([
+              'item_id' => $items["item_selector"],
+           'filename' => $filename,
+           'original_name'=>$photo->getClientOriginalName(),
+          ]);
+        }}
+
+
+      return back();
    }
 
    public function loadItemForUpdatePage(){
@@ -124,6 +150,15 @@ class DBController extends Controller
      // return response()->json($properties);
    
 
+   }
+
+   public function deletePhotoFromItem(){
+      $request = request() -> input();
+      $file =  $request["delete"];
+   
+      Storage::disk('public')->delete($file); 
+      DB::table('files')->where('filename', $file) -> delete(); 
+      return to_route('update');
    }
 
    public function viewSingleItemPage(Item $item){ 

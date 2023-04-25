@@ -2,7 +2,7 @@
 <title>Forgot Password</title>
 
 @section('content')
-<div class="container text-center">
+<div class="container my-4 text-center">
     <h1>Password Reset</h1>
     <p>Enter your email address below to get a password reset link.</p>
 </div>
@@ -10,7 +10,7 @@
 <div class="container mt-2 mb-4">
     <div class="col-sm-6 mx-auto">
         <div class="card text-center">
-            <div class="card-header font-weight-bold">Reset</div>
+            <div class="card-header fw-bold">Reset</div>
             <div class="card-body">
                 <form action ="/forgot-password" method ="post">
                     @csrf

@@ -6,10 +6,11 @@
 
 <div class="container my-2 text-center">
     <h1>{{$item->name}}</h1>
-    <div class="col-sm-8 my-2 h-100 mx-auto">
+    <div class="row">
+    <div class="col-sm-6 my-2 mx-auto">
         <div class="card h-100 text-center">
             <div class="card-header fw-bold">Item Details</div>
-            <div class="card-body h-100 text-center">
+            <div class="card-body text-center">
                 <h6>Category: {{$item->category}}</h6>
                 <h6>Quantity: {{$item->quantity}}</h6>
                 <h6>Description: {{$item -> description}}</h6>
@@ -18,10 +19,10 @@
         </div>
     </div>
 
-    <div class="col-sm-8 my-2 text-center h-100 mx-auto">
+    <div class="col-sm-6 my-2 text-center mx-auto">
         <div class="card h-100">
             <div class="card-header fw-bold">Photos</div>
-            <div class="card-body h-100">
+            <div class="card-body">
                 @if($photoCount == 0)
                 <p>No photos are currently stored for this item.</p>
 
@@ -44,11 +45,11 @@
                         @foreach($photos as $photo)
                         @if($counterForIfFirst == 0)
                         <div class="carousel-item active">
-                            <img src="{{url($photo->filename)}}" alt="photo" class="d-block h-100 w-100">
+                            <img src="{{url($photo->filename)}}" alt="photo" class="d-block h-100 w-100" style="max-height:300px">
                         </div>
                         @else
                         <div class="carousel-item">
-                            <img src="{{url($photo->filename)}}" alt="photo" class="d-block h-100 w-100">
+                            <img src="{{url($photo->filename)}}" alt="photo" class="d-block h-100 w-100" style="max-height:300px">
                         </div>
                         @endif
                         @endforeach
@@ -67,6 +68,8 @@
             </div>
         </div>
     </div>
+    </div>
+    
 
 </div>
 
