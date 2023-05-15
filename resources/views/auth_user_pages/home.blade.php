@@ -20,21 +20,19 @@
         <table id="itemsTable" class="table table-bordered text-center table-striped table-responsive-sm">
             <thead class="thead" style="background-color:steelblue; color:white;">
                 <tr>
-                    <th>Item</th>
+                    <th>UPC #</th>
                     <th>Category</th>
                     <th>Description</th>
                     <th>Quantity</th>
-                    <th>Last Updated</th>
                 </tr>
             </thead>
 
             @foreach( $data as $item)
                 <tr>
-                    <td><a href="/items/{{$item->id}}">{{$item->name}}</a></td>
+                    <td><a href="/items/{{$item->id}}">{{$item->upc}}</a></td>
                     <td>{{$item->category}}</td>
                     <td>{{$item->description}}</td>
                     <td>{{$item->quantity}}</td>
-                    <td>{{$item->updated_at}}</td>
 
                 </tr>
             @endforeach

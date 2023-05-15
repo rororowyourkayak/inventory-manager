@@ -1,13 +1,33 @@
 @extends('layouts.master')
 
 @section('content')
+
+
 <div class="container text-center my-4">
     <h1>Add Items</h1>
     <p>Use the box below to add new entries to the inventory.</p>
+    <p>UPC must be twelve numbers long.</p>
     <p>Photo uploads must be .png, .jpg, or .jpeg.<br>
        Storage amount of photos may not exceed 2MB in total. 
     </p>
 </div>
+
+<div class="col-sm-8 mx-auto">
+@if(session()->has('existsMessage'))
+
+<div class="alert alert-info  alert-dismissible">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  {{session()->get('existsMessage')}}
+</div>
+
+@elseif(session()->has('successMessage'))
+<div class="alert alert-success alert-dismissible">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  {{session()->get('successMessage')}}
+</div>
+@endif 
+</div>
+
 <div class="container my-4">
             <div class="row">
                 <div class="col-8 mx-auto">
@@ -22,8 +42,8 @@
                                 <div class="container">
                                     <div class="form-group">
                                         
-                                        <label for="item_name" class="mb-2 mr-sm-2">Item name: </label>
-                                        <input class="form-control mb-2 mr-sm-2 col-sm" type = "text" name="name" id="item_name" placeholder="Item Name" required value="{{ old('name') }}">
+                                        <label for="item_upc" class="mb-2 mr-sm-2">Item UPC: </label>
+                                        <input class="form-control mb-2 mr-sm-2 col-sm" type = "text" name="upc" id="item_upc" placeholder="Item UPC" required value="{{ old('upc') }}">
                                         
                                         <label for="category" class="mb-2 mr-sm-2">Category:</label>
                                         <select name="category" id="category" class="form-control col-sm mb-2 mr-sm-2" required value="{{ old('category') }}">
@@ -54,3 +74,4 @@
 </div>
 
 @endsection
+

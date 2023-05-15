@@ -38,6 +38,11 @@
                                     <input class="ms-1 form-control" type="password" name="password" id="password" placeholder="Password" required>
                                     
                                 </div>
+                                <div class="input-group mb-4">
+                                    <label for="password_c">Confirm Password:</label>
+                                    <input class="ms-1 form-control" type="password" name="password_confirmation" id="password_c" placeholder="Confirm Password" required>
+                                    
+                                </div>
                                 
                                 @foreach($errors->all() as $error)
                                 <p class="text-danger text-center mt-1">{{$error}}</p>

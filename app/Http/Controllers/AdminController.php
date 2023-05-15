@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\User; 
 use App\Models\Item; 
 use App\Models\Category; 
+use Illuminate\Validation\Rule;
+
 
 class AdminController extends Controller
 {
@@ -31,31 +33,17 @@ class AdminController extends Controller
         Item::where('user', $user["name"])->delete(); 
         User::where('username',$user["name"])->delete(); 
         Storage::deleteDirectory($user["name"]); 
-        return to_route('admin'); 
+        return back(); 
     }
 
-    /* public function automate(){
-        $cats = Category::all(); 
-        $c = [];
-        foreach($cats as $cat){
-            array_push($c, $cat->category);
-        }
-        for($i = 0; $i < 500; $i++){
-            $rand = rand(0,count($c)-1);
-            Item::create([
-                "user"=>"mjordan",
-                "name"=>"testItem".($i+1),
-                "category"=>$c[$rand],
-                "description"=>"This is test item number ".($i+1)
-            ]);
-        }
-        return to_route('/');
-    } */
+    
     public function addCategory(){
-
+        $category = request()->validate(['name' => ['required','max:127',Rule::unique('categories', 'category')]]);
+        DB::table('categories')->insert(['category' => $category['name']]); 
+        return back(); 
     }
     public function updateCategory(){
-        
+        $category = request()->validate(['new' =>['required', 'max:127']]);
     }
     public function deleteCategory(){
         

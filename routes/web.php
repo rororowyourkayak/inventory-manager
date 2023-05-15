@@ -21,6 +21,8 @@ use App\Http\Controllers\AdminController;
 
 
 Route::get("/",function(){return view("start"); })->middleware('guest')->name('/');
+Route::get("/contact", [DBController::class, 'viewContactPage'])->name('contact'); 
+
 Route::get("/signup",[SignupController::class, 'create'])->middleware('guest');
 Route::post("/signup",[SignupController::class, 'store'])->middleware('guest');
 
@@ -43,6 +45,7 @@ Route::get("/updateLoader", [DBController::class, 'loadItemForUpdatepage'])->mid
 
 
 Route::get("/items/{item}", [DBController::class, 'viewSingleItemPage'])->middleware('auth');
+Route::get("/callUPCitemDBAPI", [DBController::class, 'callUPCitemDBAPI'])->middleware('auth'); 
 
 Route::post("/delete_item",[DBController::class,'deleteItems'])->middleware('auth');
 Route::post("/add_item",[DBController::class,'addItems'])->middleware('auth');
@@ -55,9 +58,6 @@ Route::post("/add_category", [AdminController::class, 'addCategory'])->middlewar
 Route::post("/update_category", [AdminController::class, 'updateCategory'])->middleware('admin'); 
 Route::post("/delete_category", [AdminController::class, 'deleteCategory'])->middleware('admin'); 
 
-/* 
-Route::get("/automateEntries", [AdminController::class, 'automate'])->middleware('admin');
- */
 
 Route::get("/forgot-password", function(){return view("session.forgot_password");})->middleware('guest');
 Route::post('/forgot-password', [SessionController::class,'resetLink'])->middleware('guest');

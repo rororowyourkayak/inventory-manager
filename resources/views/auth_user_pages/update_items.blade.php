@@ -8,6 +8,16 @@
     <p>Use the box below to add update entries in the inventory.</p>
 </div>
 
+@if(session()->has('successMessage'))
+<div class="col-sm-8 mx-auto">
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    {{session()->get('successMessage')}}
+    </div>
+</div>
+
+@endif 
+
 <div class="container my-4">
             <div class="row">
                 <div class="col-8 mx-auto">
@@ -24,16 +34,13 @@
                                     
                                     <option hidden disabled selected value> -- select an item -- </option>
                                     @foreach($data as $item)
-                                    <option id="{{$item->id}}_option" value="{{$item->id}}" class="optionBar">{{$item->name}}</option>
+                                    <option id="{{$item->upc}}_option" value="{{$item->id}}" class="optionBar">#{{$item->upc}} - {{$item->description}}</option>
                                     @endforeach
                                     
                             </select>
                             
                                 <div class="container">
                                     <div class="form-group">
-                                        
-                                        <label for="item_name_update" class="mb-2 mr-sm-2">Item name: </label>
-                                        <input class="form-control mb-2 mr-sm-2 col-sm" type = "text" name="name" id="item_name_update"  required>
                                         
                                         <label for="category" class="mb-2 mr-sm-2">Category:</label>
                                         <select name="category" id="category_update" class="form-control col-sm mb-2 mr-sm-2" required>
@@ -72,16 +79,24 @@
 
 
 @section('scripts')
+<!-- //links for the select2 jquery library -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script>
     $(document).ready(function(){
+        $("#item_selector").select2(); 
+        
         $("#item_selector").change(function(){
-            var idNum = $(this).children("option:selected").val();
+            var id = $(this).children("option:selected").val();
                 $.ajax({ method: "GET", 
                     url: "/updateLoader", 
-                    data: {id: idNum },
+                    data: {id: id},
                     success: function(result){
-                    var itemData = JSON.parse(result);
-                    $("#item_name_update").val(itemData["name"]);
+                    console.log(result);
+                    var itemData = result; 
+                   /*  var itemData = JSON.parse(result);
+                    console.log(itemData);  */
                     $("#category_update").val(itemData["category"]);
                     $("#description_update").val(itemData["description"]);
                     $("#quantity_update").val(itemData["quantity"]);
@@ -103,10 +118,11 @@
                          </form>`;
                             $("#deleteTable").append(`<tr> <td><img src=${photo["filename"]} id=${photo["filename"]} height=100 width=100 alt="photo"></td> <td>${photo["original_name"]}</td> <td>${photoDeleteForm}</td> </tr>`);
                         } 
-                    }
+                    } 
                    
-                }});
+                } });
         });
+        
     });
 </script>
 @endsection

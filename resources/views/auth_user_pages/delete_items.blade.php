@@ -8,14 +8,21 @@
     <p>Use the table below to delete items from the inventory.</p>
     <p>Note: Deleting items <b>cannot</b> be undone.</p>
 </div>
-
+@if(session()->has('successMessage'))
+<div class="col-sm-8 mx-auto">
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    {{session()->get('successMessage')}}
+    </div>
+</div>
+@endif 
 <div class="container my-4">
             <div class="col-sm-10 text-center mx-auto">
                 @if($itemsExist)
                     <table id="itemsTable" class="table table-bordered text-center table-striped table-responsive-sm">
                         <thead class="thead text-white steelblueBG">
                             <tr>
-                                <th>Item</th>
+                                <th>UPC #</th>
                                 <th>Category</th>
                                 <th>Description</th>
                                 <th>Quantity</th>
@@ -24,7 +31,7 @@
                         </thead>
                   @foreach($data as $item)
                     <tr>
-                        <td id="{{$item->id}}_item_name">{{$item->name}}</td>
+                        <td id="{{$item->id}}_upc">{{$item->upc}}</td>
                         <td id="{{$item->id}}_category">{{$item->category}}</td>
                         <td id="{{$item->id}}_description">{{$item->description}}</td>
                         <td id="{{$item->id}}_quantity">{{$item->quantity}}</td>

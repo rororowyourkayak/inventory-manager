@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Item extends Model
 {
     use HasFactory;
-    protected $fillable = ['user', 'name', 'category', 'description', 'quantity'];
+    protected $fillable = ['user', 'upc', 'category', 'description', 'quantity'];
+    public $timestamps = false; 
 }

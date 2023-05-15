@@ -5,7 +5,7 @@
 
 
 <div class="container my-2 text-center">
-    <h1>{{$item->name}}</h1>
+    <h1>#{{$item->upc}}</h1>
     <div class="row">
     <div class="col-sm-6 my-2 mx-auto">
         <div class="card h-100 text-center">
@@ -14,7 +14,9 @@
                 <h6>Category: {{$item->category}}</h6>
                 <h6>Quantity: {{$item->quantity}}</h6>
                 <h6>Description: {{$item -> description}}</h6>
-                <h6>Last Updated: {{$item -> updated_at}}</h6>
+                <div class="container" id="api_call_button_container">
+                    <button id="api_call_button">Check Market Price</button>
+                </div>
             </div>
         </div>
     </div>
@@ -73,4 +75,43 @@
 
 </div>
 
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function(){
+        $("#api_call_button").click(function(){
+            var upc = "{{$item->upc}}";
+            /* $.ajax({
+                method: "GET",
+                url: "https://api.upcitemdb.com/prod/trial/lookup?upc="+upc,
+                headers: {
+                    "Accept": "application/json", 
+                    "Content-Type": "application/json"
+                },
+                success: function(response){
+                    $("#api_call_button_container").html("Price: $"+response["items"]["offers"][0]["price"]);
+                },
+                error: function(response){
+                    $("#api_call_button_container").html(response["message"]); 
+                }
+
+            }); */
+            $.ajax({
+                method: "GET", 
+                url: "/callUPCitemDBAPI", 
+                data: {upc: upc},
+                success: function(result){
+                    
+                    if(result["errorMessage"]){
+                        $("#api_call_button_container").html(result["errorMessage"]); 
+                    }
+                    else if(result["items"]){
+                        $("#api_call_button_container").html("$"+result["items"][0]["offers"]["0"]["price"]); 
+                    }
+                }
+            })
+        });
+    });
+</script>
 @endsection

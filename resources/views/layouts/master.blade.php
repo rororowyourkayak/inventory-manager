@@ -25,13 +25,13 @@
                 <li class="nav-item"><a class="nav-link" href="/add">Add</a></li>
                 <li class="nav-item"><a class="nav-link" href="/update">Update</a></li>
                 <li class="nav-item"><a class="nav-link" href="/delete">Delete</a></li>
-                <li class="nav-item"><a href="/stats" class="nav-link">Stats</a></li>
             </ul>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Welcome, {{auth()->user()->name}}!</a>
                     <ul class="dropdown-menu">
                     <li class="dropdown-item"><a class="nav-link text-black" href="/account">Account</a></li>
+                    <li class="dropdown-item"><a class="nav-link text-black" href="/stats">Stats</a></li>
                     <li class="dropdown-item"><a class="nav-link text-black" href="/logout">Logout</a></li>
                     </ul>
                 </li>  

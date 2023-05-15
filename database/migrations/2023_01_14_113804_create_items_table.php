@@ -16,6 +16,7 @@ return new class extends Migration
         if(!Schema::hasTable('items')){
         Schema::create('items', function (Blueprint $table) {
             $table->id();
+            $table->string('user',255);
             $table->string('name',255);
             $table->string('category',128);
             $table->text('description')->nullable();
