@@ -22,7 +22,7 @@
 
         <div class="container">
             <div class="col-sm-8 text-center mx-auto"> 
-                      @if(DB::table('items')->where('user', [auth()->user()->username])->exists())
+                      @if(DB::table('items')->where('user_id', [auth()->user()->id])->exists())
                         
                 
                 <form method="post" action="/delete_item">
@@ -39,7 +39,7 @@
                         </thead>
                 
                     
-                  @foreach(Item::where('user',auth()->user()->username)->get() as $item)
+                  @foreach(Item::where('user_id',auth()->user()->id)->get() as $item)
                     <tr id="<?=$item->id?>" class="checkboxInTable">
                         <td id="{{$item->id}}_item_name">{{$item->name}}</td>
                         <td id="{{$item->id}}_category">{{$item->category}}</td>
@@ -102,7 +102,7 @@
                             <select name="item_selector" class="col-sm-8 mb-2 mr-sm-2" id="item_selector">
                                     
                                     <option hidden disabled selected value> -- select an item -- </option>
-                                    @foreach(Item::where('user',auth()->user()->username)->get() as $item)
+                                    @foreach(Item::where('user_id',auth()->user()->id)->get() as $item)
                                     <option id="{{$item->id}}_option" value={{$item->id}}>{{$item->name}}</option>
                                     @endforeach
                                     

@@ -3,6 +3,7 @@
 
 <title>Sign Up</title>
     @section('content')
+    {!! NoCaptcha::renderJs() !!}
         <div class="container text-center my-4" >
             <h1>Inventory Manager Sign Up</h1>
             <p>Use the form below to make an account.</p>
@@ -14,7 +15,7 @@
                 <div class="card text-center">
                     <div class="card-header fw-bold">Sign Up</div>
                     <div class="card-body">
-                        <form action="/signup" method="post">
+                        <form action="/signup" method="post" id="signUpForm">
                             @csrf
                             <div class="container col-sm-8">
                                 <div class="input-group mb-4">
@@ -47,7 +48,8 @@
                                 @foreach($errors->all() as $error)
                                 <p class="text-danger text-center mt-1">{{$error}}</p>
                                 @endforeach
-                                <input type="submit" class="btn btn-primary" value="Sign Up">
+                                
+                                {!! NoCaptcha::displaySubmit('signUpForm', 'Submit') !!}
                                 
 
                             </div>

@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\Category; 
+use Mail;
+use App\Mail\mailer; 
+use Illuminate\Support\Facades\Auth;
 
 class DBController extends Controller
 {
@@ -20,19 +23,19 @@ class DBController extends Controller
       
 
       return view("auth_user_pages.home", array(
-         'data' =>Item::where('user',auth()->user()->username)->get(),
-          'itemsExist'=>DB::table('items')->where('user', [auth()->user()->username])->exists(),
+         'data' =>Item::where('user_id',auth()->user()->id)->get(),
+          'itemsExist'=>DB::table('items')->where('user_id', [auth()->user()->id])->exists(),
          
          ));
    }
    public function viewStatsPage(){
       $categoryCounts = []; 
       foreach(Category::all() as $cat){
-         $categoryCounts[$cat->category] = Item::where('user', auth()->user()->username)->where('category',$cat->category)->count();
+         $categoryCounts[$cat->category] = Item::where('user_id', auth()->user()->id)->where('category',$cat->category)->count();
       }
       return view("auth_user_pages.stats",array(
          'categories'=>$categoryCounts, 
-         'itemCount' => Item::where('user', auth()->user()->username)->count(),
+         'itemCount' => Item::where('user_id', auth()->user()->id)->count(),
       ));
    }
    public function viewAddPage(){
@@ -44,7 +47,7 @@ class DBController extends Controller
    public function viewUpdatePage(){
       return view("auth_user_pages.update_items", array(
          'categories'=>Category::all(),
-         'data'=>Item::where('user',auth()->user()->username)->get(),
+         'data'=>Item::where('user_id',auth()->user()->id)->get(),
          
       ));
    }
@@ -52,8 +55,8 @@ class DBController extends Controller
    public function viewDeletePage(){
 
       return view("auth_user_pages.delete_items", array(
-         'data'=>Item::where('user',auth()->user()->username)->get(), 
-         'itemsExist'=>DB::table('items')->where('user', [auth()->user()->username])->exists()));
+         'data'=>Item::where('user_id',auth()->user()->id)->get(), 
+         'itemsExist'=>DB::table('items')->where('user_id', [auth()->id()])->exists()));
       
    }
 
@@ -83,10 +86,11 @@ class DBController extends Controller
             'quantity' => ['required', 'numeric', 'integer', 'gte:1'],
             'file' => ['max:2048'],
          ]);
-       $items["user"]  = auth()->user()->username;
+       $items["user_id"]  = auth()->id();
+   
       
        $alreadyExists = false; 
-       if($checkItem = Item::where('upc', $items["upc"])->where('user', $items['user'])->first()){
+       if($checkItem = Item::where('upc', $items["upc"])->where('user_id', $items['user_id'])->first()){
             $checkItem -> increment('quantity', $items['quantity']); 
             $alreadyExists = true; 
        }
@@ -98,7 +102,7 @@ class DBController extends Controller
        foreach (request()->file as $photo) {
          $filename = $photo->store(auth()->user()->username, 'public');
          DB::table('files')->insert([
-            'item_id' => $newItem->upc,
+            'item_id' => $newItem->id,
          'filename' => $filename,
          'original_name'=>$photo->getClientOriginalName(), 
         ]);
@@ -218,7 +222,21 @@ class DBController extends Controller
    }
 
    public function processContactInfo(){
-         return true; 
+         $mailInfo = request()->validate([
+            'name' => ['required', 'max:255',],
+            'email' => ['required', 'max:300', 'email'],
+            'subject' =>['required'],
+            'message' => ['required', 'max:10000'],
+            'g-recaptcha-response' => ['required','captcha']
+         ]);
+
+         if(Mail::to('inventory@example.com')->send(new mailer($mailInfo))){
+            return to_route("contactSuccess");
+         }
+         else{
+            return back()->withErrors(); 
+         }
+         
    }
 }
 

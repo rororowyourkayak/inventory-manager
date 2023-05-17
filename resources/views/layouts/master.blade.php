@@ -78,7 +78,11 @@
 
 <footer class="text-center mt-4">
     <hr>
-    Inventory Manager - Created by Roshan Forde
+    <p>Inventory Manager - Created by Roshan Forde
+    <br><a href="/contact">contact</a>
+    </p>
+    
+
 </footer>
 </html>
 

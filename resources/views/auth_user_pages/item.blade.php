@@ -15,7 +15,7 @@
                 <h6>Quantity: {{$item->quantity}}</h6>
                 <h6>Description: {{$item -> description}}</h6>
                 <div class="container" id="api_call_button_container">
-                    <button id="api_call_button">Check Market Price</button>
+                    <button id="api_call_button">Check Price</button>
                 </div>
             </div>
         </div>
@@ -82,7 +82,8 @@
     $(document).ready(function(){
         $("#api_call_button").click(function(){
             var upc = "{{$item->upc}}";
-            /* $.ajax({
+            /* code for  original front-end implementation, does not work because of CORS 
+             $.ajax({
                 method: "GET",
                 url: "https://api.upcitemdb.com/prod/trial/lookup?upc="+upc,
                 headers: {
