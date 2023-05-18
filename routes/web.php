@@ -36,30 +36,28 @@ Route::middleware(['guest'])->group(function(){
     Route::post('/reset-password', [SessionController::class, 'resetPassword']); 
 });
 
-Route::middleware(['auth'])->group(function(){
 
-    Route::get("/home", [DBController::class, 'viewHomePage']);
-    Route::get("/edit", function(){return view("auth_user_pages.edit"); });
+Route::middleware(['auth'])->controller(DBController::class)->group(function(){
+
     
-    Route::get("/stats", [DBController::class,'viewStatsPage']);
-    Route::get("/logout", [SessionController::class, 'destroy']);
-    Route::get("/add", [DBController::class, 'viewAddPage'])->name('add');
-    Route::get("/update",  [DBController::class, 'viewUpdatePage'])->name('update');
-    Route::get("/delete",  [DBController::class, 'viewDeletePage'])->name('delete');
-    Route::get("/updateLoader", [DBController::class, 'loadItemForUpdatepage']); 
-    Route::get("/items/{item}", [DBController::class, 'viewSingleItemPage']);
-    Route::get("/callUPCitemDBAPI", [DBController::class, 'callUPCitemDBAPI']); 
-    Route::post("/delete_item",[DBController::class,'deleteItems']);
-    Route::post("/add_item",[DBController::class,'addItems']);
-    Route::post("/update_item",[DBController::class,'updateItems']);
-    Route::post("/delete_item_photo",[DBController::class,'deletePhotoFromItem']);
+    Route::get("/home", 'viewHomePage');
+    Route::get("/stats",'viewStatsPage');
+    
+    Route::get("/add", 'viewAddPage')->name('add');
+    Route::get("/update",  'viewUpdatePage')->name('update');
+    Route::get("/delete",  'viewDeletePage')->name('delete');
+    Route::get("/updateLoader", 'loadItemForUpdatepage'); 
 
-    Route::get("/account", [SessionController::class, 'loadAccountPage']);
-    Route::post("/change_username",[SessionController::class,'changeUsername']);
-    Route::post("/change_name",[SessionController::class,'changeName']);
+    Route::get("/items/{item}", 'viewSingleItemPage');
+    
+    Route::get("/callUPCitemDBAPI", 'callUPCitemDBAPI');
 
+    Route::post("/delete_item",'deleteSingleItem');
+    Route::post("/delete_multiple_items", 'deleteMultipleItems');
 
-
+    Route::post("/add_item",'addItems');
+    Route::post("/update_item",'updateItems');
+    Route::post("/delete_item_photo",'deletePhotoFromItem');
 }); 
 
 Route::middleware(['admin'])->group(function(){
@@ -70,14 +68,34 @@ Route::middleware(['admin'])->group(function(){
     Route::post("/delete_category", [AdminController::class, 'deleteCategory']); 
 });
 
-Route::get("/contact", [DBController::class, 'viewContactPage'])->name('contact'); 
-Route::post("/processContact",[DBController::class, 'processContactInfo']); 
+Route::middleware(['auth'])->controller(SessionController::class)->group(function(){
+
+    Route::get("/account",  'loadAccountPage');
+    Route::post("/change_username",'changeUsername');
+    Route::post("/change_name",'changeName');
+    Route::get("/logout", 'destroy');
+
+});
+
+
+Route::get("/items/{upc}", function($upc){
+    return DBController::viewSingleItemPage($upc);
+})->middleware('auth');
+
+Route::get("/contact", [DBController::class,'viewContactPage'])->name('contact'); 
+Route::post("/processContact",[DBController::class,'processContactInfo']); 
 Route::get("/contactSuccess",function(){return view("contactSuccess");})->name('contactSuccess');
 
 
 
+/* Old routes that may come in handy */
 
 
+/* 
+This is the route for the old edit page, which the page itslef would need to be redone if used again
+Route::get("/edit", function(){return view("auth_user_pages.edit"); });
+
+*/
 
 
 

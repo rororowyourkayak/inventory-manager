@@ -34,7 +34,7 @@
                                     
                                     <option hidden disabled selected value> -- select an item -- </option>
                                     @foreach($data as $item)
-                                    <option id="{{$item->upc}}_option" value="{{$item->id}}" class="optionBar">#{{$item->upc}} - {{$item->description}}</option>
+                                    <option id="{{$item->upc}}_option" value="{{$item->upc}}" class="optionBar">#{{$item->upc}} - {{$item->description}}</option>
                                     @endforeach
                                     
                             </select>
@@ -88,10 +88,10 @@
         $("#item_selector").select2(); 
         
         $("#item_selector").change(function(){
-            var id = $(this).children("option:selected").val();
+            var upc = $(this).children("option:selected").val();
                 $.ajax({ method: "GET", 
                     url: "/updateLoader", 
-                    data: {id: id},
+                    data: {upc: upc},
                     success: function(result){
                     console.log(result);
                     var itemData = result; 

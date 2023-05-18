@@ -29,7 +29,7 @@
 
             @foreach( $data as $item)
                 <tr>
-                    <td><a href="/items/{{$item->id}}">{{$item->upc}}</a></td>
+                    <td><a href="/items/{{$item->upc}}">{{$item->upc}}</a></td>
                     <td>{{$item->category}}</td>
                     <td>{{$item->description}}</td>
                     <td>{{$item->quantity}}</td>

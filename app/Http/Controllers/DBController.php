@@ -60,19 +60,55 @@ class DBController extends Controller
       
    }
 
-   
-   
-   public function deleteItems(){
-      $items = request()->input(); 
-      $item = $items["delete"]; 
-      
-         $upc = Item::where('id',$item)->first()->upc;
-         Item::where('id',$item)->delete();
-         foreach(DB::table('files')->where('item_id', $item)->get() as $photo){
+   /* function to delete individual items and their associated files */
+   public function deleteItem($upc, $user_id){
+
+      Item::where('upc',$upc)->where('user_id',$user_id)->delete();
+
+      foreach(DB::table('files')->where('upc',$upc)->where('user_id',$user_id)->get() as $photo){
             Storage::disk('public')->delete($photo -> filename); 
-         }
-         DB::table('files')->where('item_id', $item) -> delete();    
-     return back()->with("successMessage", $upc. " was deleted successfully.");
+      }
+      DB::table('files')->where('upc',$upc)->where('user_id',$user_id)-> delete();   
+
+      return true; 
+   }
+
+   public function deleteSingleItem(){
+      $items = request()->validate([
+         'delete' => ['required', 'regex:/\d{12}/'],
+      ]); 
+
+      if($this->deleteItem($items['delete'], auth()->id())){
+         return back()->with("successMessage", $items['delete']. " was deleted successfully.");
+      }
+      else{
+         return back()->with("errorMessage", "Delete was not successful.");
+      }
+    
+   }
+
+   public function deleteMultipleItems(){
+
+        $upcs = request()->get('upc'); 
+         $validUPCs = []; 
+        foreach($upcs as $upc){
+            if(preg_match('/\d{12}/', $upc)){
+               array_push($validUPCs, $upc); 
+            }
+        }
+
+        $user_id = auth()->id(); 
+
+        $deletedCounter = 0; 
+        foreach($validUPCs as $upcToDelete){
+
+            if($this -> deleteItem($upcToDelete, $user_id)) { $deletedCounter++; }
+
+        }
+      //  dd($request->get('upc'));
+       
+       return response()->json(['success'=>$deletedCounter . " items deleted successfully."]);
+
    }
 
    public function addItems(){
@@ -95,14 +131,15 @@ class DBController extends Controller
             $alreadyExists = true; 
        }
        else{
-         Item::create($items); 
+        $newItem = Item::create($items); 
        }
         // dd($newItem);
        if(request()->hasFile('file')){
        foreach (request()->file as $photo) {
          $filename = $photo->store(auth()->user()->username, 'public');
          DB::table('files')->insert([
-            'item_id' => $newItem->id,
+            'user_id' => $newItem->user_id,
+            'upc' => $newItem -> upc,
          'filename' => $filename,
          'original_name'=>$photo->getClientOriginalName(), 
         ]);
@@ -133,7 +170,7 @@ class DBController extends Controller
       ]);
 
 
-      Item::where('id',$items["item_selector"])-> 
+      Item::where('upc',$items["item_selector"])->where('user_id', auth()->id())-> 
       update(["category" => $items["category"],
       "description" => $items["description"],
       "quantity" => $items["quantity"]]);
@@ -142,7 +179,8 @@ class DBController extends Controller
          foreach (request()->file as $photo) {
            $filename = $photo->store(auth()->user()->username, 'public');
            DB::table('files')->insert([
-              'item_id' => $items["item_selector"],
+              'user_id' => auth()->id(),
+              'upc' => $items["item_selector"],
            'filename' => $filename,
            'original_name'=>$photo->getClientOriginalName(),
           ]);
@@ -156,10 +194,10 @@ class DBController extends Controller
 
      // $request = request() -> input();
       $request = request() -> validate([
-         'id'=>['required', 'numeric']
+         'upc'=>['required']
       ]);
-      $item = Item::where('id', $request['id'])->first();
-      $photos = DB::table('files')->where('item_id',$request['id'])->get();
+      $item = Item::where('upc', $request['upc'])->where('user_id', auth()->id())->first();
+      $photos = DB::table('files')->where('upc', $request['upc'])->where('user_id', auth()->id())->get();
 
       $properties = array(
       "category"=>$item->category, 
@@ -184,11 +222,12 @@ class DBController extends Controller
       return back();
    }
 
-   public function viewSingleItemPage(Item $item){
+   public function viewSingleItemPage($upc){
+      $item = Item::where('upc', $upc)->where('user_id', auth()->id())->first(); 
          return view('auth_user_pages.item', array(
             'item' => $item, 
-            'photos' => DB::table('files')->where('item_id', $item->id)->get(),
-            'photoCount' => DB::table('files')->where('item_id', $item->id)->count(),
+            'photos' => DB::table('files')->where('upc', $upc)->where('user_id', auth()->id())->get(),
+            'photoCount' => DB::table('files')->where('upc', $upc)->where('user_id', auth()->id())->count(),
 
          ));
       

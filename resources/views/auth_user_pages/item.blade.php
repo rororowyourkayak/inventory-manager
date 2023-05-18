@@ -14,6 +14,8 @@
                 <h6>Category: {{$item->category}}</h6>
                 <h6>Quantity: {{$item->quantity}}</h6>
                 <h6>Description: {{$item -> description}}</h6>
+                <h6>Created At: {{$item -> created_at}}</h6>
+                <h6>Last Updated: {{$item -> updated_at}}</h6>
                 <div class="container" id="api_call_button_container">
                     <button id="api_call_button">Check Price</button>
                 </div>
