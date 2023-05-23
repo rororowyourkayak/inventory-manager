@@ -1,4 +1,3 @@
-
 @extends('layouts.master')
 
 <title>Inventory Home</title>
@@ -7,8 +6,8 @@
 
 
 <div class="container text-center my-4">
-            <h1>Inventory Home</h1>
-            <p>Welcome back {{auth()->user()->name}}! View your inventory below.</p>
+    <h1>Inventory Home</h1>
+    <p>Welcome back {{auth()->user()->name}}! View your inventory below.</p>
 
 </div>
 
@@ -16,6 +15,11 @@
     <div class="col-sm-10 mx-auto overflow-auto text-center">
 
         @if($itemsExist)
+
+        <div class="container mx-auto text-center">
+            <button class="btn btn-primary" onClick="location.href = '/exportItemXLSX'">Export XLSX</button>
+            <button class="btn btn-primary" onClick="location.href = '/exportItemCSV'">Export CSV</button>
+        </div>
 
         <table id="itemsTable" class="table table-bordered text-center table-striped table-responsive-sm">
             <thead class="thead" style="background-color:steelblue; color:white;">
@@ -28,18 +32,19 @@
             </thead>
 
             @foreach( $data as $item)
-                <tr>
-                    <td><a href="/items/{{$item->upc}}">{{$item->upc}}</a></td>
-                    <td>{{$item->category}}</td>
-                    <td>{{$item->description}}</td>
-                    <td>{{$item->quantity}}</td>
+            <tr>
+                <td><a href="/items/{{$item->upc}}">{{$item->upc}}</a></td>
+                <td>{{$item->category}}</td>
+                <td>{{$item->description}}</td>
+                <td>{{$item->quantity}}</td>
 
-                </tr>
+            </tr>
             @endforeach
 
         </table>
-            @else <p><b>There are currently no entries in the inventory.</b><br>Add Items on the <a href="/add">Add page</a>.</p>
-            @endif
+        @else <p><b>There are currently no entries in the inventory.</b><br>Add Items on the <a href="/add">Add
+                page</a>.</p>
+        @endif
     </div>
 </div>
 

@@ -28,6 +28,13 @@
             </ul>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Export Inventory</a>
+                    <ul class="dropdown-menu">
+                    <li class="dropdown-item"><a class="nav-link text-black" href="/exportItemXLSX">XLSX</a></li>
+                    <li class="dropdown-item"><a class="nav-link text-black" href="/exportItemCSV">CSV</a></li>
+                    </ul>
+                </li>  
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Welcome, {{auth()->user()->name}}!</a>
                     <ul class="dropdown-menu">
                     <li class="dropdown-item"><a class="nav-link text-black" href="/account">Account</a></li>

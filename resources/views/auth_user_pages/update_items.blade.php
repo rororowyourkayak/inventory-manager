@@ -1,4 +1,3 @@
-
 @extends('layouts.master')
 
 @section('content')
@@ -12,68 +11,73 @@
 <div class="col-sm-8 mx-auto">
     <div class="alert alert-success alert-dismissible">
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    {{session()->get('successMessage')}}
+        {{session()->get('successMessage')}}
     </div>
 </div>
 
-@endif 
+@endif
 
 <div class="container my-4">
-            <div class="row">
-                <div class="col-8 mx-auto">
-                    <div class="card text-center">
-                        <div class="card-header fw-bold">Update Item</div>
-                        <div class="card-body">
-                        @foreach($errors->all() as $error)
-                                <p class="text-danger text-center mt-1">{{$error}}</p>
-                        @endforeach
-                        <form action="/update_item" method="post" enctype="multipart/form-data">
-                            @csrf
-                            <label for="item_selector" class="mb-2 mr-sm-2 ">Choose item to change:</label>
-                            <select name="item_selector" class="col-sm-8 mb-2 mr-sm-2" id="item_selector">
-                                    
-                                    <option hidden disabled selected value> -- select an item -- </option>
-                                    @foreach($data as $item)
-                                    <option id="{{$item->upc}}_option" value="{{$item->upc}}" class="optionBar">#{{$item->upc}} - {{$item->description}}</option>
+    <div class="row">
+        <div class="col-8 mx-auto">
+            <div class="card text-center">
+                <div class="card-header fw-bold">Update Item</div>
+                <div class="card-body">
+                    @foreach($errors->all() as $error)
+                    <p class="text-danger text-center mt-1">{{$error}}</p>
+                    @endforeach
+                    <form action="/update_item" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <label for="item_selector" class="mb-2 mr-sm-2 ">Choose item to change:</label>
+                        <select name="item_selector" class="col-sm-8 mb-2 mr-sm-2" id="item_selector">
+
+                            <option hidden disabled selected value> -- select an item -- </option>
+                            @foreach($data as $item)
+                            <option id="{{$item->upc}}_option" value="{{$item->upc}}" class="optionBar">#{{$item->upc}}
+                                - {{$item->description}}</option>
+                            @endforeach
+
+                        </select>
+
+                        <div class="container">
+                            <div class="form-group">
+
+                                <label for="category" class="mb-2 mr-sm-2">Category:</label>
+                                <select name="category" id="category_update" class="form-control col-sm mb-2 mr-sm-2"
+                                    required>
+                                    <option hidden disabled selected value> -- select a category -- </option>
+                                    @foreach($categories as $category)
+                                    <option value="{{$category->category}}">{{$category->category}}</option>
                                     @endforeach
-                                    
-                            </select>
-                            
-                                <div class="container">
-                                    <div class="form-group">
-                                        
-                                        <label for="category" class="mb-2 mr-sm-2">Category:</label>
-                                        <select name="category" id="category_update" class="form-control col-sm mb-2 mr-sm-2" required>
-                                        <option hidden disabled selected value> -- select a category -- </option>
-                                        @foreach($categories as $category)
-                                            <option value="{{$category->category}}">{{$category->category}}</option>
-                                        @endforeach
-                                        </select>
+                                </select>
 
-                                        <label for="description_update" class="mb-2 mr-sm-2">Description (Optional): </label>
-                                        <textarea class="form-control mb-2 mr-sm-2 col-sm" rows="2" cols ="4" name="description"  id="description_update"></textarea>
-                                        
-                                        <label for="quantity_update" class="mb-2 mr-sm-2">Quantity:</label>
-                                        <input class="form-control mb-2 mr-sm-2 col-sm" type="number" name="quantity" id="quantity_update" min="1" required>
+                                <label for="description_update" class="mb-2 mr-sm-2">Description (Optional): </label>
+                                <textarea class="form-control mb-2 mr-sm-2 col-sm" rows="2" cols="4" name="description"
+                                    id="description_update"></textarea>
 
-                                        <label for="file" class="mb-2 mr-sm-2">Upload Photos (Optional):</label>
-                                        <input class="form-control mb-2 mr-sm-2 col-sm" type="file" name="file[]" id="file" accept=".png, .jpg, .jpeg" multiple>
+                                <label for="quantity_update" class="mb-2 mr-sm-2">Quantity:</label>
+                                <input class="form-control mb-2 mr-sm-2 col-sm" type="number" name="quantity"
+                                    id="quantity_update" min="1" required>
 
-                                    </div>
-                                    <button type="submit" class="btn btn-primary mx-auto">Update</button>
-                                </div>
-                            </form>
+                                <label for="file" class="mb-2 mr-sm-2">Upload Photos (Optional):</label>
+                                <input class="form-control mb-2 mr-sm-2 col-sm" type="file" name="file[]" id="file"
+                                    accept=".png, .jpg, .jpeg" multiple>
+
+                            </div>
+                            <button type="submit" class="btn btn-primary mx-auto">Update</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
-                
-                </div> 
-                
             </div>
-            <div class="container" id="photoDelete">
+        </div>
 
-            </div>
-            
+    </div>
+
+</div>
+<div class="container" id="photoDelete">
+
+</div>
+
 </div>
 @endsection
 

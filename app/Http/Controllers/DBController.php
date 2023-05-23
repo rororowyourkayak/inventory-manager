@@ -75,14 +75,21 @@ class DBController extends Controller
 
    public function deleteSingleItem(){
       $items = request()->validate([
-         'delete' => ['required', 'regex:/\d{12}/'],
+         'upc' => ['required', 'regex:/\d{12}/'],
       ]); 
 
-      if($this->deleteItem($items['delete'], auth()->id())){
-         return back()->with("successMessage", $items['delete']. " was deleted successfully.");
+    /*   if($this->deleteItem($items['upc'], auth()->id())){
+         return back()->with("successMessage", $items['upc']. " was deleted successfully.");
       }
       else{
          return back()->with("errorMessage", "Delete was not successful.");
+      } */
+
+      if($this->deleteItem($items['upc'], auth()->id())){
+         return response()->json(['success'=>$items['upc']. " was deleted successfully."]);
+      }
+      else{
+         return response()->json(['error'=>$items['upc']. " was not deleted successfully."]);
       }
     
    }
@@ -96,7 +103,7 @@ class DBController extends Controller
                array_push($validUPCs, $upc); 
             }
         }
-
+        
         $user_id = auth()->id(); 
 
         $deletedCounter = 0; 
@@ -107,7 +114,7 @@ class DBController extends Controller
         }
       //  dd($request->get('upc'));
        
-       return response()->json(['success'=>$deletedCounter . " items deleted successfully."]);
+       return response()->json(['success'=>$deletedCounter . " item(s) deleted successfully."]);
 
    }
 
@@ -116,7 +123,7 @@ class DBController extends Controller
        //$items = request()->input();
 
          $items = request() -> validate([
-            'upc' => ['required', 'regex:/\d{12}/'],
+            'upc' => ['required', 'regex:/\d{12}/', 'size:12'],
             'category' => ['required', 'max:127'],
             'description' => ['max:511'],
             'quantity' => ['required', 'numeric', 'integer', 'gte:1'],
@@ -127,13 +134,13 @@ class DBController extends Controller
       
        $alreadyExists = false; 
        if($checkItem = Item::where('upc', $items["upc"])->where('user_id', $items['user_id'])->first()){
-            $checkItem -> increment('quantity', $items['quantity']); 
+            //$checkItem -> increment('quantity', $items['quantity']); 
             $alreadyExists = true; 
        }
        else{
         $newItem = Item::create($items); 
-       }
-        // dd($newItem);
+       
+
        if(request()->hasFile('file')){
        foreach (request()->file as $photo) {
          $filename = $photo->store(auth()->user()->username, 'public');
@@ -145,18 +152,35 @@ class DBController extends Controller
         ]);
       }
    }
-      if($alreadyExists){
-         $message = "UPC already exists in inventory. #".$checkItem->upc .
-         " quantity incremented by ". $items['quantity'].".\nNew quantity is ".$checkItem->quantity."."; 
-         return back()->with('existsMessage', $message);
-         }
-      else{
-         $message = "Item added successfully.";
-         return back()->with('successMessage', $message); 
-      }
+}
+   if($newItem){
+      return response()->json(["success" => "UPC# ". $newItem -> upc . " created successfully."]);
+   }
+   else{
+      return response()->json(["error" => "UPC# ". $newItem -> upc . " created successfully."]);
+   }
+      
       
    }
 
+   public function incrementItemFromRequest(){
+
+      $data = request()->validate([
+         'upc'=>['required', 'regex:/\d{12}/', 'size:12'],
+         'quantity' => ['required', 'numeric', 'integer', 'gte:1'],
+      ]);
+
+      /* if($item = Item::where('upc', $data["upc"])->where('user_id', auth()->id())->first()){
+         $item -> increment('quantity', $data['upc']);
+      } */
+      $item = Item::where('upc', $data["upc"])->where('user_id', auth()->id())->first();
+      Item::where('upc', $data["upc"])->where('user_id', auth()->id())->update(["quantity" => $item->quantity + $data['quantity']]);
+
+     // $item ->update(['quantity', $item->quantity + $data['quantity']]);
+
+      return response()->json(['success'=> 'UPC# ' . $data["upc"] . " was incremented successfully!"]); 
+
+   }
    public function updateItems(){
       
       
@@ -276,6 +300,30 @@ class DBController extends Controller
             return back()->withErrors(); 
          }
          
+   }
+
+   public function checkIfItemExists($upc, $user_id){
+
+      return Item::where('upc',$upc)->where('user_id', $user_id)->exists(); 
+
+   }
+
+   public function checkIfAddedItemExists(){
+
+      $validated = request()->validate([
+         'upc' => ['required', 'regex:/\d{12}/', 'size:12'],
+      ]);
+
+      $exists = $this->checkIfItemExists($validated['upc'], auth()->id());
+
+      if($exists){
+         $response = ['exists' => 'Item already exists.'];
+      }
+      else{ 
+         $response = ['new' => 'Item does not yet exist.'];
+      }
+
+      return response()->json($response);
    }
 }
 

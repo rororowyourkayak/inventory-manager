@@ -10,4 +10,6 @@ class Item extends Model
     use HasFactory;
     protected $fillable = ['user', 'upc', 'category', 'description', 'quantity', 'user_id'];
     public $timestamps = true; 
+    
+    
 }

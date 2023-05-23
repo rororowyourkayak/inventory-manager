@@ -5,6 +5,8 @@ use App\Http\Controllers\SignupController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\DBController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ExportController;
+
 
 
 
@@ -37,6 +39,7 @@ Route::middleware(['guest'])->group(function(){
 });
 
 
+
 Route::middleware(['auth'])->controller(DBController::class)->group(function(){
 
     
@@ -52,12 +55,16 @@ Route::middleware(['auth'])->controller(DBController::class)->group(function(){
     
     Route::get("/callUPCitemDBAPI", 'callUPCitemDBAPI');
 
-    Route::post("/delete_item",'deleteSingleItem');
+    Route::post("/delete_single_item",'deleteSingleItem');
     Route::post("/delete_multiple_items", 'deleteMultipleItems');
 
     Route::post("/add_item",'addItems');
     Route::post("/update_item",'updateItems');
     Route::post("/delete_item_photo",'deletePhotoFromItem');
+
+    Route::post('/check_item_exists',[DBController::class, 'checkIfAddedItemExists']); 
+    Route::post('/increment_item_quantity',[DBController::class, 'incrementItemFromRequest']);
+    
 }); 
 
 Route::middleware(['admin'])->group(function(){
@@ -77,10 +84,18 @@ Route::middleware(['auth'])->controller(SessionController::class)->group(functio
 
 });
 
+Route::middleware(['auth'])->group(function(){
 
-Route::get("/items/{upc}", function($upc){
-    return DBController::viewSingleItemPage($upc);
-})->middleware('auth');
+    Route::get("/items/{upc}", function($upc){
+        return DBController::viewSingleItemPage($upc);
+    });
+
+    Route::get('/exportItemXLSX',[ExportController::class, 'exportAsXLSX']);
+    Route::get('/exportItemCSV',[ExportController::class, 'exportAsCSV']);
+
+});
+
+
 
 Route::get("/contact", [DBController::class,'viewContactPage'])->name('contact'); 
 Route::post("/processContact",[DBController::class,'processContactInfo']); 
