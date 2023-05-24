@@ -1,10 +1,10 @@
 @extends('layouts.master')
 
 <title>Contact</title>
+{!! RecaptchaV3::initJs() !!}
+
 
 @section('content')
-
-{!! NoCaptcha::renderJs() !!}
 
 <div class="container my-2 text-center">
     <h1>Contact Us</h1>
@@ -33,7 +33,9 @@
                 <label for="message" class="form-label">Message:</label>
                 <textarea name="message" id="message" rows="2" cols="4" class="form-control" placeholder="Message" required></textarea>
 
-                {!! NoCaptcha::displaySubmit('contactForm', 'Submit') !!}
+                {!! RecaptchaV3::field('processContact') !!}
+               
+                <button type="submit" class="btn btn-primary my-2">Submit</button>
                 
             </form>
 

@@ -8,7 +8,7 @@
     <p>Note: Deleting items <b>cannot</b> be undone.</p>
 </div>
 
-<div class="container mx-auto text-center" id="messageContainer"></div>
+<div class="col-sm-8 mx-auto text-center alert alert-success" id="messageContainer"></div>
 
 <div class="container my-4">
     <div class="col-sm-10 text-center mx-auto">
@@ -71,6 +71,9 @@
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
 
 <script>
+
+    $("#messageContainer").hide();
+
     $(document).ready( function () {
 
    var table = $('#itemsTable').DataTable( {
@@ -141,6 +144,7 @@
                 
                 table.rows('.selected').remove().draw(false);
                 $('#selectedTableItemsToDelete').html("<b>"+table.rows('.selected').data().length + "</b> row(s) selected to delete");
+                $("#messageContainer").show();
                 $("#messageContainer").text(response.success);
                 }
             }); 
@@ -149,6 +153,8 @@
         else{ alert("No items were selected.");}
     });
 
+    //code for the single delete button, not being used as of now
+    //DO NOT DELETE, could be useful later
    /*  $(".singleItemDeleteButton").on('click', function(){
 
         $(this).parent().parent().addClass("selectedForSingleDelete");

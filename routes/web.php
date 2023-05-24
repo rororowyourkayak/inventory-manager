@@ -101,6 +101,8 @@ Route::get("/contact", [DBController::class,'viewContactPage'])->name('contact')
 Route::post("/processContact",[DBController::class,'processContactInfo']); 
 Route::get("/contactSuccess",function(){return view("contactSuccess");})->name('contactSuccess');
 
+Route::get('/check_valid_upc',[DBController::class, 'checkIfUPCValid']);
+
 
 
 /* Old routes that may come in handy */
