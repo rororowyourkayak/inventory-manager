@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <style>
-    .steelblueBG{background-color:#4682B4; color:white; } 
+    .steelblueBG{background-color:#4682B4; color:white; } .lightGrayBG{background-color:#f1f1f1;}
     
 </style>
 @auth
@@ -27,6 +27,7 @@
                 <li class="nav-item"><a class="nav-link" href="/delete">Delete</a></li>
             </ul>
             <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/import">Import Inventory</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Export Inventory</a>
                     <ul class="dropdown-menu">

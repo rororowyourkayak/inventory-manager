@@ -9,10 +9,14 @@ use App\Models\User;
 
 class SignupController extends Controller
 {
+    /* load signup view */
     public function create(){
         return view('signup.signup_form_page');
     }
     
+    /* get user info from request, if valid make new user
+    use bcrypt for password hash
+    */
     public function store(){
         $attributes = request()->validate([
             'name' => ['required','max:127'],

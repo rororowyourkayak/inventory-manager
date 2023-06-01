@@ -15,23 +15,21 @@ class AdminController extends Controller
 {
     public function viewAdminPage(){
        
-        $numUsers = DB::table('users')->count();
-        $numItems = DB::table('items')->count();
-        $allUsers = User::all(); 
+        
          return view("auth_user_pages.admin_page",array(
-            "numUsers" => DB::table('users')->count(),
-            "numItems" => DB::table('items')->count(), 
-            "allUsers" => $allUsers = User::all(),
+            "numUsers" => User::count(),
+            "numItems" => Item::count(), 
+            "allUsers" => User::all(),
             "categories" => Category::all(),
          ));
     }
 
     public function deleteUser(){
 
-        $user = request()->validate(['name' => ['required','max:127']]);
+        $user = request()->validate(['user_id' => ['required','numeric']]);
 
-        Item::where('user', $user["name"])->delete(); 
-        User::where('username',$user["name"])->delete(); 
+        Item::where('user_id', $user["user_id"])->delete(); 
+        User::where('id',$user["user_id"])->delete(); 
         Storage::deleteDirectory($user["name"]); 
         return back(); 
     }
@@ -39,13 +37,27 @@ class AdminController extends Controller
     
     public function addCategory(){
         $category = request()->validate(['name' => ['required','max:127',Rule::unique('categories', 'category')]]);
-        DB::table('categories')->insert(['category' => $category['name']]); 
+
+        Category::create(['category' => $category['name']]); 
         return back(); 
     }
     public function updateCategory(){
-        $category = request()->validate(['new' =>['required', 'max:127']]);
+        $category = request()->validate([
+            'new' =>['required', 'max:127'],
+            'cat' => ['required']
+        ]);
+      
+        Category::where('category', $category["cat"])->update(['category'=> $category["new"]]);
+        return back();
     }
     public function deleteCategory(){
-        
+        $category = request()->validate([
+            'cat' => ['required'],
+        ]);
+
+        Category::where('category', $category["cat"])->delete();
+
+        return back();
+
     }
 }

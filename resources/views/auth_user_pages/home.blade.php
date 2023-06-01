@@ -16,18 +16,15 @@
 
         @if($itemsExist)
 
-        <div class="container mx-auto text-center">
-            <button class="btn btn-primary" onClick="location.href = '/exportItemXLSX'">Export XLSX</button>
-            <button class="btn btn-primary" onClick="location.href = '/exportItemCSV'">Export CSV</button>
-        </div>
 
         <table id="itemsTable" class="table table-bordered text-center table-striped table-responsive-sm">
-            <thead class="thead" style="background-color:steelblue; color:white;">
+            <thead class="thead steelblueBG">
                 <tr>
                     <th>UPC #</th>
                     <th>Category</th>
                     <th>Description</th>
                     <th>Quantity</th>
+                    <th>Last Updated At</th>
                 </tr>
             </thead>
 
@@ -37,6 +34,7 @@
                 <td>{{$item->category}}</td>
                 <td>{{$item->description}}</td>
                 <td>{{$item->quantity}}</td>
+                <td>{{$item->updated_at->format('m-d-Y h:m:s')}}</td>
 
             </tr>
             @endforeach

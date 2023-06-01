@@ -6,6 +6,7 @@
 
 <div class="container my-2 text-center">
     <h1>#{{$item->upc}}</h1>
+    <button class="btn btn-primary my-2" onClick="location.href = '/update?upc={{$item->upc}}'">Update This Item</button>
     <div class="row">
         <div class="col-sm-6 my-2 mx-auto">
             <div class="card h-100 text-center">
@@ -17,7 +18,7 @@
                     <h6>Created At: {{$item -> created_at}}</h6>
                     <h6>Last Updated: {{$item -> updated_at}}</h6>
                     <div class="container" id="api_call_button_container">
-                        <button id="api_call_button">Check Price</button>
+                        <button class="btn btn-info"id="api_call_button">Check Price</button>
                     </div>
                 </div>
             </div>
@@ -111,8 +112,11 @@
                     if(result["errorMessage"]){
                         $("#api_call_button_container").html(result["errorMessage"]); 
                     }
-                    else if(result["items"]){
+                    else if(result["items"][0]){
                         $("#api_call_button_container").html("$"+result["items"][0]["offers"]["0"]["price"]); 
+                    }
+                    else{
+                        $("#api_call_button_container").html("UPC is not available for price check.");
                     }
                 }
             })

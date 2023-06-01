@@ -6,6 +6,8 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\DBController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\ImportController;
+
 
 
 
@@ -64,6 +66,8 @@ Route::middleware(['auth'])->controller(DBController::class)->group(function(){
 
     Route::post('/check_item_exists',[DBController::class, 'checkIfAddedItemExists']); 
     Route::post('/increment_item_quantity',[DBController::class, 'incrementItemFromRequest']);
+
+    Route::get('/redirect_to_update_page/{upc}',[DBController::class, 'redirectToUpdate']);
     
 }); 
 
@@ -80,6 +84,9 @@ Route::middleware(['auth'])->controller(SessionController::class)->group(functio
     Route::get("/account",  'loadAccountPage');
     Route::post("/change_username",'changeUsername');
     Route::post("/change_name",'changeName');
+    Route::post('/change_email','changeEmail');
+    Route::post('/change_password','changePassword');
+
     Route::get("/logout", 'destroy');
 
 });
@@ -93,6 +100,9 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/exportItemXLSX',[ExportController::class, 'exportAsXLSX']);
     Route::get('/exportItemCSV',[ExportController::class, 'exportAsCSV']);
 
+    Route::get('/import',[ImportController::class, 'viewImportPage']);
+    Route::post('/import',[ImportController::class, 'importItemCSV']);
+
 });
 
 
@@ -102,7 +112,7 @@ Route::post("/processContact",[DBController::class,'processContactInfo']);
 Route::get("/contactSuccess",function(){return view("contactSuccess");})->name('contactSuccess');
 
 Route::get('/check_valid_upc',[DBController::class, 'checkIfUPCValid']);
-
+Route::get('/categories',[DBController::class,'viewCategoriesPage']);
 
 
 /* Old routes that may come in handy */

@@ -31,6 +31,7 @@
                     <th>Description</th>
                     <th>Quantity</th>
                     {{-- <th>Delete?</th> --}}
+                    <th>Last Updated At</th>
                     <th>Select</th>
 
                 </tr>
@@ -42,6 +43,7 @@
                 <td>{{$item->category}}</td>
                 <td>{{$item->description}}</td>
                 <td>{{$item->quantity}}</td>
+                <td>{{$item->updated_at->format('m-d-Y h:m:s')}}</td>
                {{--  <td> <button id="{{$item->upc}}" class="singleItemDeleteButton btn btn-danger mx-auto">Delete</button>
                 </td> --}}
                 <td></td>
@@ -82,8 +84,8 @@
             style: 'mutli'
           },
         columnDefs: [
-                { orderable: false, targets: [4],},
-                   { className: 'select-checkbox', targets:  4
+                { orderable: false, targets: [5],},
+                   { className: 'select-checkbox', targets:  5
                 }
             ],
             buttons: [
@@ -141,11 +143,16 @@
                 contentType: false,
                 success: function(response){
                 //console.log(response);
-                
+                if(response.success){
                 table.rows('.selected').remove().draw(false);
                 $('#selectedTableItemsToDelete').html("<b>"+table.rows('.selected').data().length + "</b> row(s) selected to delete");
                 $("#messageContainer").show();
                 $("#messageContainer").text(response.success);
+                }
+                if(response.errorUPC){
+                    alert(response.errorUPC);
+                }
+               
                 }
             }); 
         }

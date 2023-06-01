@@ -7,6 +7,7 @@
     <p>Use the box below to add update entries in the inventory.</p>
 </div>
 
+{{-- error and success message displays --}}
 @if(session()->has('successMessage'))
 <div class="col-sm-8 mx-auto">
     <div class="alert alert-success alert-dismissible">
@@ -15,6 +16,23 @@
     </div>
 </div>
 
+@elseif(session()->has('errorMessage'))
+
+<div class="col-sm-8 mx-auto">
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        {{session()->get('errorMessage')}}
+    </div>
+</div>
+
+@elseif(session()->has('redirectMessage'))
+
+<div class="col-sm-8 mx-auto">
+    <div class="alert alert-info alert-dismissible">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        {{session()->get('redirectMessage')}}
+    </div>
+</div>
 @endif
 
 <div class="container my-4">
@@ -32,10 +50,12 @@
                         <select name="item_selector" class="col-sm-8 mb-2 mr-sm-2" id="item_selector">
 
                             <option hidden disabled selected value> -- select an item -- </option>
+
                             @foreach($data as $item)
                             <option id="{{$item->upc}}_option" value="{{$item->upc}}" class="optionBar">#{{$item->upc}}
                                 - {{$item->description}}</option>
                             @endforeach
+
 
                         </select>
 
@@ -88,45 +108,84 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
-    $(document).ready(function(){
-        $("#item_selector").select2(); 
-        
-        $("#item_selector").change(function(){
-            var upc = $(this).children("option:selected").val();
-                $.ajax({ method: "GET", 
-                    url: "/updateLoader", 
-                    data: {upc: upc},
-                    success: function(result){
-                    console.log(result);
-                    var itemData = result; 
-                   /*  var itemData = JSON.parse(result);
-                    console.log(itemData);  */
-                    $("#category_update").val(itemData["category"]);
-                    $("#description_update").val(itemData["description"]);
-                    $("#quantity_update").val(itemData["quantity"]);
+    $(document).ready(function () {
+    $("#item_selector").select2();
+    var urlParams = new URLSearchParams(window.location.search);
+    var prefillUPC = urlParams.get('upc');
+    if (prefillUPC != null) {
+        $("#item_selector").val(prefillUPC);
+        $("#item_selector").change();
 
-                    $("#photoDelete").html("");
+         $.ajax({ method: "GET", 
+                url: "/updateLoader", 
+                data: {upc: prefillUPC},
+                success: function(result){
+               // console.log(result);
+                var itemData = result; 
+               
+                $("#category_update").val(itemData["category"]);
+                $("#description_update").val(itemData["description"]);
+                $("#quantity_update").val(itemData["quantity"]);
+
+                $("#photoDelete").html("");
+                
+                if(itemData["photos"][0]){
+
+                    $("#photoDelete").html("<table id=\"deleteTable\" class=\"table table-bordered text-center table-striped table-responsive-sm\"></table>");
+                    $("#deleteTable").html("<thead class=\"steelblueBG\"><tr>\"<th>Photo</th><th>Filename</th><th>Delete?</th>\"</tr></thead>");
+
+                    var photos = itemData["photos"]; 
                     
-                    if(itemData["photos"][0]){
-
-                        $("#photoDelete").html("<table id=\"deleteTable\" class=\"table table-bordered text-center table-striped table-responsive-sm\"></table>");
-                        $("#deleteTable").html("<thead class=\"steelblueBG\"><tr>\"<th>Photo</th><th>Filename</th><th>Delete?</th>\"</tr></thead>");
-
-                        var photos = itemData["photos"]; 
-                        
-                         for(var photo of photos){
-                            var photoDeleteForm = `<form action="/delete_item_photo" method="post">
-                            @csrf
-                            <input type="hidden" name="delete" value=${photo["filename"]}>
-                            <button type="submit" class="btn btn-danger mx-auto">Delete</button>
-                         </form>`;
-                            $("#deleteTable").append(`<tr> <td><img src=${photo["filename"]} id=${photo["filename"]} height=100 width=100 alt="photo"></td> <td>${photo["original_name"]}</td> <td>${photoDeleteForm}</td> </tr>`);
-                        } 
+                     for(var photo of photos){
+                        var photoDeleteForm = `<form action="/delete_item_photo" method="post">
+                        @csrf
+                        <input type="hidden" name="delete" value=${photo["filename"]}>
+                        <button type="submit" class="btn btn-danger mx-auto">Delete</button>
+                     </form>`;
+                        $("#deleteTable").append(`<tr> <td><img src=${photo["filename"]} id=${photo["filename"]} height=100 width=100 alt="photo"></td> <td>${photo["original_name"]}</td> <td>${photoDeleteForm}</td> </tr>`);
                     } 
-                   
-                } });
+                } 
+               
+            } });  
+             }
+    $("#item_selector").on("change", function () {
+        var upc = $(this).children("option:selected").val();
+        $.ajax({
+            method: "GET",
+            url: "/updateLoader",
+            data: { upc: upc },
+            success: function (result) {
+                // console.log(result);
+                var itemData = result;
+                /*  var itemData = JSON.parse(result);
+                 console.log(itemData);  */
+                $("#category_update").val(itemData["category"]);
+                $("#description_update").val(itemData["description"]);
+                $("#quantity_update").val(itemData["quantity"]);
+
+                $("#photoDelete").html("");
+
+                if (itemData["photos"][0]) {
+
+                    $("#photoDelete").html("<table id=\"deleteTable\" class=\"table table-bordered text-center table-striped table-responsive-sm\"></table>");
+                    $("#deleteTable").html("<thead class=\"steelblueBG\"><tr>\"<th>Photo</th><th>Filename</th><th>Delete?</th>\"</tr></thead>");
+
+                    var photos = itemData["photos"];
+
+                    for (var photo of photos) {
+                        var photoDeleteForm = `<form action="/delete_item_photo" method="post">
+                        @csrf
+                        <input type="hidden" name="delete" value=${photo["filename"]}>
+                        <button type="submit" class="btn btn-danger mx-auto">Delete</button>
+                     </form>`;
+                        $("#deleteTable").append(`<tr> <td><img src=${photo["filename"]} id=${photo["filename"]} height=100 width=100 alt="photo"></td> <td>${photo["original_name"]}</td> <td>${photoDeleteForm}</td> </tr>`);
+                    }
+                }
+
+            }
         });
-        
     });
+
+});
 </script>
 @endsection
