@@ -10,6 +10,7 @@
 
 <div class="row">
     <div class="container mx-auto text-center col-sm-10">
+        {{-- read categories from passed in list onto the page --}}
         @foreach($categories as $cat)
             <div class="col-sm-3 mx-auto">
                 <li>{{$cat->category}}</li>

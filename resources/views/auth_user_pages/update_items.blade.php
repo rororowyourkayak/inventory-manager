@@ -25,6 +25,7 @@
     </div>
 </div>
 
+{{-- message that gets shown if the user comes here from the add page and upc exists already --}}
 @elseif(session()->has('redirectMessage'))
 
 <div class="col-sm-8 mx-auto">
@@ -41,12 +42,15 @@
             <div class="card text-center">
                 <div class="card-header fw-bold">Update Item</div>
                 <div class="card-body">
+                    {{-- read back input errors if present --}}
                     @foreach($errors->all() as $error)
                     <p class="text-danger text-center mt-1">{{$error}}</p>
                     @endforeach
                     <form action="/update_item" method="post" enctype="multipart/form-data">
                         @csrf
                         <label for="item_selector" class="mb-2 mr-sm-2 ">Choose item to change:</label>
+
+                        {{-- read in all items in the inventory into the selector, value will be the items upc --}}
                         <select name="item_selector" class="col-sm-8 mb-2 mr-sm-2" id="item_selector">
 
                             <option hidden disabled selected value> -- select an item -- </option>
@@ -63,6 +67,7 @@
                             <div class="form-group">
 
                                 <label for="category" class="mb-2 mr-sm-2">Category:</label>
+                                {{-- read categories into the category selector from passed in variable --}}
                                 <select name="category" id="category_update" class="form-control col-sm mb-2 mr-sm-2"
                                     required>
                                     <option hidden disabled selected value> -- select a category -- </option>
@@ -112,6 +117,8 @@
     $("#item_selector").select2();
     var urlParams = new URLSearchParams(window.location.search);
     var prefillUPC = urlParams.get('upc');
+
+    /* code for if a upc is attached to the url parameters, in the case of redirecting form another page */
     if (prefillUPC != null) {
         $("#item_selector").val(prefillUPC);
         $("#item_selector").change();
@@ -123,12 +130,16 @@
                // console.log(result);
                 var itemData = result; 
                
+                //prepopulate the input fields with the item information
                 $("#category_update").val(itemData["category"]);
                 $("#description_update").val(itemData["description"]);
                 $("#quantity_update").val(itemData["quantity"]);
 
                 $("#photoDelete").html("");
                 
+                /* if there are photos present for the response, display the photo table and the photos for the item
+                    this will also enable the delete form which will allow the user to delete individual photos
+                */
                 if(itemData["photos"][0]){
 
                     $("#photoDelete").html("<table id=\"deleteTable\" class=\"table table-bordered text-center table-striped table-responsive-sm\"></table>");
@@ -155,16 +166,20 @@
             url: "/updateLoader",
             data: { upc: upc },
             success: function (result) {
-                // console.log(result);
-                var itemData = result;
-                /*  var itemData = JSON.parse(result);
-                 console.log(itemData);  */
+                
+                var itemData = result;//result does not neeed to be JSON.parse()d
+                
+                //prepopulate the input fields with the item information
+ 
                 $("#category_update").val(itemData["category"]);
                 $("#description_update").val(itemData["description"]);
                 $("#quantity_update").val(itemData["quantity"]);
 
                 $("#photoDelete").html("");
 
+                /* if there are photos present for the response, display the photo table and the photos for the item
+                    this will also enable the delete form which will allow the user to delete individual photos
+                */
                 if (itemData["photos"][0]) {
 
                     $("#photoDelete").html("<table id=\"deleteTable\" class=\"table table-bordered text-center table-striped table-responsive-sm\"></table>");

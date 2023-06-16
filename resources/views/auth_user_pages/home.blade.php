@@ -14,9 +14,8 @@
 <div class="container">
     <div class="col-sm-10 mx-auto overflow-auto text-center">
 
+        {{-- wrap in if statement because we don't want a table showing if there are no items to display in it  --}}
         @if($itemsExist)
-
-
         <table id="itemsTable" class="table table-bordered text-center table-striped table-responsive-sm">
             <thead class="thead steelblueBG">
                 <tr>
@@ -28,6 +27,7 @@
                 </tr>
             </thead>
 
+            {{-- $data is passed in variable to view holding all of the items in inventory --}}
             @foreach( $data as $item)
             <tr>
                 <td><a href="/items/{{$item->upc}}">{{$item->upc}}</a></td>
@@ -35,7 +35,7 @@
                 <td>{{$item->description}}</td>
                 <td>{{$item->quantity}}</td>
                 <td>{{$item->updated_at->format('m-d-Y h:m:s')}}</td>
-
+                {{-- format function just changes the look of the time dispalyed to the user --}}
             </tr>
             @endforeach
 
@@ -53,6 +53,7 @@
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 
 <script>
+    //make the items display table an off-the-shelf DataTable
     $(document).ready( function () {
     $('#itemsTable').DataTable();
 } );

@@ -81,9 +81,9 @@
         @yield('content')
     </div>
 
-    @yield('scripts')
+    
 </body>
-
+@yield('scripts')
 <footer class="text-center mt-4">
     <hr>
     <p>Inventory Manager - Created by Roshan Forde

@@ -1,7 +1,11 @@
 @extends('layouts.master')
 <title>Login</title>
 
-
+@if(session()->has('error'))
+<div class="container alert alert-danger text-center">
+    {{session()->get('error')}}
+</div>
+@endif
 @section('content')
 <div class="container text-center mt-4">
     <h1>Inventory Manager Login</h1>

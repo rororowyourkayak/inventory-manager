@@ -1,5 +1,8 @@
 @extends('layouts.master')
 
+{{-- this page reads out the numbers of items stored and that sort of information back to the user in a table
+    could be expanded on in the future
+    --}}
 @section('content')
 <div class="container text-center my-4">
     <h1>Statistics</h1>

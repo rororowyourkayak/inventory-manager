@@ -5,6 +5,7 @@
 
 <title>Edit Inventory</title>
 
+{{-- this page is currently dead, more of a reference, the route is not live --}}
 
 @section('content')
     <div class="container text-center my-4">
